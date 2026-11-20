@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jhut AI — Garment Waste Sorting Station</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f1ea; --panel:#ffffff; --ink:#18241d; --muted:#5d6b62; --line:#dfdcd2;
+  --brand:#0f5c3f; --brand2:#13895c; --accent:#f2a516; --danger:#c0392b;
+  --b1:#e8e4d6; --b2:#2d3a4f; --b3:#3c5a8a; --b4:#d0563b; --b5:#8b8f98; --b6:#9a6fb0;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,'Hind Siliguri',system-ui,sans-serif;font-size:15px;line-height:1.45}
+.bn{font-family:'Hind Siliguri','Noto Sans Bengali',sans-serif}
+h1,h2,h3{font-family:'Space Grotesk',Inter,sans-serif;margin:0}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px}
+.mark{width:42px;height:42px;border-radius:11px;background:conic-gradient(from 200deg,#e8e4d6,#2d3a4f,#3c5a8a,#d0563b,#8b8f98,#9a6fb0,#e8e4d6);position:relative}
+.mark::after{content:"";position:absolute;inset:9px;border-radius:6px;background:var(--brand)}
+.logo h1{font-size:22px;letter-spacing:-.3px}
+.logo small{display:block;color:var(--muted);font-size:12px}
+.hdr-right{display:flex;gap:8px;align-items:center}
+.pill{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 12px;font-size:13px}
+.pill.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.hero{margin:14px 0;background:linear-gradient(120deg,#0f5c3f,#13895c);color:#fff;border-radius:var(--radius);padding:16px 18px;display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:14px;align-items:center}
+.hero h2{font-size:22px;line-height:1.2}
+.hero p{margin:4px 0 0;opacity:.85;font-size:13px}
+.stat b{display:block;font-family:'Space Grotesk';font-size:24px}
+.stat span{font-size:12px;opacity:.85}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 14px}
+nav.tabs a{text-decoration:none;color:var(--ink);background:var(--panel);border:1px solid var(--line);padding:8px 14px;border-radius:10px;font-weight:600;font-size:14px}
+nav.tabs a.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+nav.tabs a .n{display:inline-block;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#18241d;text-align:center;font-size:12px;line-height:20px;margin-right:6px}
+.view{display:none}.view.on{display:block}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.grid2{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:14px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.kpi span{font-size:12px;color:var(--muted)}
+.kpi b{display:block;font-family:'Space Grotesk';font-size:22px}
+.kpi.hl b{color:var(--brand2)}
+.cam{position:relative;border-radius:12px;overflow:hidden;background:#222;aspect-ratio:1/1}
+.cam canvas{width:100%;height:100%;display:block}
+.cam .frame{position:absolute;inset:18%;border:2px dashed rgba(255,255,255,.75);border-radius:8px;pointer-events:none}
+.cam .tag{position:absolute;left:10px;top:10px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;padding:3px 8px;border-radius:6px}
+.cam .scale{position:absolute;right:10px;bottom:10px;background:rgba(0,0,0,.7);color:#7dffb3;font-family:'Space Grotesk';font-size:14px;padding:4px 10px;border-radius:6px}
+.laser{position:absolute;left:0;right:0;height:3px;background:#3dff9a;box-shadow:0 0 14px 4px rgba(61,255,154,.7);top:0;display:none}
+.scanning .laser{display:block;animation:sweep .9s ease-in-out infinite alternate}
+@keyframes sweep{from{top:6%}to{top:94%}}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.btn{border:none;border-radius:10px;padding:10px 14px;font-weight:600;background:var(--ink);color:#fff}
+.btn.alt{background:var(--panel);color:var(--ink);border:1px solid var(--line)}
+.btn.go{background:var(--accent);color:#18241d}
+.btn:disabled{opacity:.5;cursor:default}
+.tray{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px}
+.tray canvas{width:100%;aspect-ratio:1/1;border-radius:8px;border:2px solid transparent;cursor:pointer;display:block}
+.tray canvas:hover{border-color:var(--accent)}
+.tray-lbl{font-size:12px;color:var(--muted);margin-top:12px}
+.result .empty{color:var(--muted);text-align:center;padding:60px 10px}
+.binbig{display:flex;align-items:center;gap:14px;border-radius:12px;padding:14px;color:#fff;margin-bottom:12px}
+.binbig .num{font-family:'Space Grotesk';font-size:44px;line-height:1;min-width:64px;text-align:center;background:rgba(255,255,255,.18);border-radius:10px;padding:8px}
+.binbig .ins{font-size:20px;font-weight:700}
+.binbig .sub{font-size:13px;opacity:.9}
+.rows{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.box{border:1px solid var(--line);border-radius:12px;padding:12px}
+.box h3{font-size:13px;color:var(--muted);font-family:Inter;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+.bar{display:flex;align-items:center;gap:8px;font-size:13px;margin:5px 0}
+.bar .l{width:96px;flex:none}
+.bar .t{flex:1;height:9px;background:#eeebe2;border-radius:6px;overflow:hidden}
+.bar .t i{display:block;height:100%;background:var(--brand2);border-radius:6px;transition:width .5s}
+.bar .v{width:44px;text-align:right;font-variant-numeric:tabular-nums}
+.sw{display:flex;align-items:center;gap:10px}
+.sw .chip{width:44px;height:44px;border-radius:10px;border:1px solid rgba(0,0,0,.15)}
+.big{font-family:'Space Grotesk';font-size:22px;font-weight:700}
+.grade{display:inline-block;font-family:'Space Grotesk';font-weight:700;font-size:22px;width:42px;height:42px;line-height:42px;text-align:center;border-radius:10px;color:#fff}
+.gA{background:#13895c}.gB{background:#d89614}.gC{background:#b0473a}
+.note{font-size:12px;color:var(--muted);margin-top:6px}
+.corr{display:flex;gap:8px;align-items:center;margin-top:12px;font-size:13px;flex-wrap:wrap}
+select{font:inherit;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:#fff}
+.chipm{display:inline-block;font-size:11px;padding:2px 8px;border-radius:999px;background:#eef6f1;color:var(--brand);border:1px solid #cfe7da;margin-left:6px;vertical-align:middle}
+.chipm.warn{background:#fff5e2;color:#8a5a00;border-color:#f3dca9}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.3px}
+td img{width:34px;height:34px;border-radius:6px;display:block}
+.binTag{display:inline-block;color:#fff;border-radius:6px;padding:2px 8px;font-weight:700;font-size:12px}
+.tablewrap{overflow-x:auto}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+.cmp .c{border-radius:12px;padding:14px}
+.cmp .c b{font-family:'Space Grotesk';font-size:26px;display:block}
+.c.u{background:#f1eee6}.c.s{background:#e6f4ec}
+.pass{display:grid;grid-template-columns:1fr 220px;gap:16px}
+.pass .head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid var(--ink);padding-bottom:10px;margin-bottom:10px}
+.pass dl{display:grid;grid-template-columns:150px 1fr;gap:6px 10px;margin:0;font-size:14px}
+.pass dt{color:var(--muted)}
+.pass dd{margin:0;font-weight:600}
+.qr{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.qr canvas{width:100%;image-rendering:pixelated}
+.summary{font-size:18px;line-height:1.75;background:#fbfaf6;border-left:4px solid var(--brand2);padding:14px 16px;border-radius:8px}
+.insight{display:flex;gap:10px;align-items:flex-start;margin:8px 0;font-size:14px}
+.insight i{font-style:normal;width:26px;height:26px;flex:none;border-radius:8px;background:#eef6f1;text-align:center;line-height:26px}
+footer{margin:18px 0 8px;font-size:12px;color:var(--muted)}
+footer .prov{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+footer b{color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(120px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;transition:transform .3s,opacity .3s;z-index:9;opacity:0}
+.toast.on{transform:translateX(-50%) translateY(0);opacity:1}
+.pipe{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:12px;margin-bottom:12px}
+.pipe span{padding:4px 9px;border-radius:7px;background:#eeebe2;color:var(--muted);transition:all .25s}
+.pipe span.on{background:var(--brand);color:#fff}
+.pipe em{color:var(--muted);font-style:normal}
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr 1fr 1fr}.hero>div:first-child{grid-column:1/-1}
+  .grid2,.pass{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .rows{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="logo">
+    <div class="mark"></div>
+    <div><h1>Jhut AI</h1><small data-i="tagline">Camera + AI sorting for garment waste · by Phantom Troupe</small></div>
+  </div>
+  <div class="hdr-right">
+    <button class="pill on" id="lang-en">English</button>
+    <button class="pill bn" id="lang-bn">বাংলা</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div><h2 data-i="heroT">Same waste. Up to 2.5× the price.</h2><p data-i="heroP">Bangladesh's factories produce ~600,000 t of jhut a year. Sorted white jhut sells for ~$600/t; unsorted mixed jhut for ~$235/t.</p></div>
+  <div class="stat"><b>~600k t</b><span data-i="s1">jhut per year</span></div>
+  <div class="stat"><b>$235 → $600</b><span data-i="s2">per tonne, unsorted → sorted</span></div>
+  <div class="stat"><b>~70%</b><span data-i="s3">of sorters are women</span></div>
+</section>
+
+<nav class="tabs" id="tabs">
+  <a href="#scan" data-v="scan"><span class="n">1</span><span data-i="t1">Scan station</span></a>
+  <a href="#batch" data-v="batch"><span class="n">2</span><span data-i="t2">Batch ledger</span></a>
+  <a href="#passport" data-v="passport"><span class="n">3</span><span data-i="t3">Batch passport</span></a>
+  <a href="#report" data-v="report"><span class="n">4</span><span data-i="t4">Daily report</span></a>
+</nav>
+
+<!-- 1. SCAN -->
+<section class="view" id="v-scan">
+  <div class="kpis">
+    <div class="kpi"><span data-i="k1">Bundles scanned</span><b id="k-n">0</b></div>
+    <div class="kpi"><span data-i="k2">Weight sorted</span><b id="k-kg">0 kg</b></div>
+    <div class="kpi"><span data-i="k3">Value if sorted</span><b id="k-val">৳0</b></div>
+    <div class="kpi hl"><span data-i="k4">Price uplift vs unsorted</span><b id="k-up">—</b></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="cam" id="cam">
+        <canvas id="camc" width="480" height="480"></canvas>
+        <div class="frame"></div><div class="laser"></div>
+        <div class="tag" data-i="camTag">Sorting table camera · place scrap inside frame</div>
+        <div class="scale" id="scale">0.00 kg</div>
+      </div>
+      <div class="btns">
+        <label class="btn alt" for="file" style="display:inline-block"><span data-i="upload">📷 Upload / take photo</span></label>
+        <input type="file" id="file" accept="image/*" capture="environment" hidden>
+        <button class="btn go" id="demo" data-i="demo">▶ Play auto demo</button>
+        <button class="btn alt" id="clear" data-i="clear">Clear batch</button>
+      </div>
+      <div class="tray-lbl" data-i="trayL">Sample scraps from a tailor's floor — tap one to scan:</div>
+      <div class="tray" id="tray"></div>
+    </div>
+
+    <div class="card result" id="result">
+      <div class="pipe" id="pipe">
+        <span data-i="p1">1 Capture</span><em>→</em><span data-i="p2">2 Colour analysis</span><em>→</em><span data-i="p3">3 Fabric model</span><em>→</em><span data-i="p4">4 Grade &amp; bin</span><em>→</em><span data-i="p5">5 Ledger</span>
+      </div>
+      <div class="empty" id="empty"><div style="font-size:40px">🧵</div><div data-i="empty">Scan a scrap to see the AI decision.</div></div>
+      <div id="res" style="display:none">
+        <div class="binbig" id="binbig">
+          <div class="num" id="r-bin">3</div>
+          <div><div class="ins bn" id="r-ins"></div><div class="sub" id="r-ins-en"></div></div>
+        </div>
+        <div class="rows">
+          <div class="box">
+            <h3><span data-i="fab">Fabric type</span> <span class="chipm" id="r-model">model</span></h3>
+            <div class="big" id="r-fab"></div>
+            <div id="r-fabbars"></div>
+            <div class="note" id="r-fibre"></div>
+          </div>
+          <div class="box">
+            <h3><span data-i="col">Colour</span> <span class="chipm" data-i="live">live pixel analysis</span></h3>
+            <div class="sw"><div class="chip" id="r-chip"></div><div><div class="big" id="r-col"></div><div class="note" id="r-hex"></div></div></div>
+            <div id="r-colbars" style="margin-top:8px"></div>
+          </div>
+          <div class="box">
+            <h3 data-i="grd">Grade</h3>
+            <div class="sw"><div class="grade" id="r-grade">A</div><div><div><b id="r-pur"></b> <span data-i="purity">colour purity</span></div><div class="note" data-i="gradeRule">A ≥ 85% · B ≥ 62% · C = mixed / print</div></div></div>
+          </div>
+          <div class="box">
+            <h3 data-i="val">Value</h3>
+            <div class="big" id="r-price"></div>
+            <div class="note" id="r-pricecmp"></div>
+          </div>
+        </div>
+        <div class="corr">
+          <span data-i="wrong">Wrong fabric? Correct it:</span>
+          <select id="r-fix"></select>
+          <span class="note" id="r-fixmsg"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. BATCH -->
+<section class="view" id="v-batch">
+  <div class="grid2" style="grid-template-columns:1fr 1fr">
+    <div class="card">
+      <h2 style="font-size:18px;margin-bottom:10px" data-i="binsT">Weight by bin</h2>
+      <div id="binbars"></div>
+    </div>
+    <div class="card">
+      <h2 style="font-size:18px;margin-bottom:10px" data-i="cmpT">What sorting is worth</h2>
+      <div class="cmp">
+        <div class="c u"><span data-i="unsorted">Sold unsorted (mixed)</span><b id="c-u">৳0</b><span class="note">@ ৳29/kg</span></div>
+        <div class="c s"><span data-i="sorted">Sold sorted by Jhut AI</span><b id="c-s">৳0</b><span class="note" id="c-x"></span></div>
+      </div>
+      <p class="note" data-i="cmpNote">Prices are illustrative, based on reported ~$235/t (unsorted) and ~$600/t (sorted white cotton) jhut prices.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <h2 style="font-size:18px;margin-bottom:10px" data-i="ledT">Batch ledger</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th></th><th data-i="thF">Fabric</th><th data-i="thC">Colour</th><th data-i="thG">Grade</th><th data-i="thB">Bin</th><th>kg</th><th>৳</th><th data-i="thS">Check</th></tr></thead>
+      <tbody id="ledger"></tbody>
+    </table></div>
+    <p class="empty note" id="ledEmpty" data-i="ledEmpty">No bundles yet — scan some scraps in the Scan station.</p>
+  </div>
+</section>
+
+<!-- 3. PASSPORT -->
+<section class="view" id="v-passport">
+  <div class="card pass">
+    <div>
+      <div class="head">
+        <div><h2 style="font-size:22px" data-i="passT">Batch Passport</h2><div class="note" data-i="passS">Digital record for buyers & recyclers · EU Digital Product Passport-ready format</div></div>
+        <div class="binTag" style="background:var(--brand);font-size:13px;padding:5px 10px" data-i="verified">AI-verified</div>
+      </div>
+      <dl id="passdl"></dl>
+      <h3 style="font-size:14px;margin:16px 0 6px" data-i="compT">Composition by weight</h3>
+      <div id="passcomp"></div>
+      <div class="btns"><button class="btn alt" id="copyPass" data-i="copyPass">Copy passport (JSON)</button></div>
+    </div>
+    <div class="qr">
+      <canvas id="qr" width="29" height="29"></canvas>
+      <div class="note" data-i="qrN">Scan to view batch record (demo code)</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. REPORT -->
+<section class="view" id="v-report">
+  <div class="card">
+    <h2 style="font-size:18px;margin-bottom:4px" data-i="repT">Today's summary for the jhut trader</h2>
+    <p class="note" data-i="repS">Written in plain Bangla so a trader or sorting supervisor can act on it — no dashboards needed.</p>
+    <div class="summary bn" id="sum-bn"></div>
+    <p id="sum-en" style="color:var(--muted);font-size:14px"></p>
+    <h3 style="font-size:14px;margin:14px 0 4px" data-i="insT">What to do next</h3>
+    <div id="insights"></div>
+    <div class="btns"><button class="btn alt" id="copySum" data-i="copySum">Copy Bangla summary</button></div>
+  </div>
+</section>
+
+<footer>
+  <div class="prov">
+    <b data-i="provT">Data & AI provenance</b> ·
+    <span data-i="prov1">Colour and grade: real pixel analysis running in this page.</span>
+    <span data-i="prov2">Fabric type: EfficientNet fine-tuned on the Kaggle “Mobile-Captured Fabric Dataset” (3,354 factory phone photos, 6 classes; licence listed as unknown, used for research/prototype). In this prototype, sample scraps use preset demo predictions and uploaded photos use a lightweight texture heuristic.</span>
+    <span data-i="prov3">Fibre blends can't be confirmed by camera — NIR sensor planned for phase 2. Weights come from a simulated scale. Prices are illustrative.</span>
+  </div>
+  <p>Jhut AI · Phantom Troupe · Prototype for demo purposes</p>
+</footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const BN_DIG='০১২৩৪৫৬৭৮৯';
+const bnNum=x=>String(x).replace(/[0-9]/g,d=>BN_DIG[d]);
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function hexToRgb(h){h=h.replace('#','');return[parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];}
+function rgbToHex(r,g,b){return'#'+[r,g,b].map(v=>Math.round(v).toString(16).padStart(2,'0')).join('');}
+function shade(hex,amt){const c=hexToRgb(hex);return rgbToHex(...c.map(v=>amt>=0?v+(255-v)*amt:v*(1+amt)));}
+function rgbToHsl(r,g,b){r/=255;g/=255;b/=255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let h=0,s=0;const l=(mx+mn)/2;if(mx!==mn){const d=mx-mn;s=l>.5?d/(2-mx-mn):d/(mx+mn);if(mx===r)h=(g-b)/d+(g<b?6:0);else if(mx===g)h=(b-r)/d+2;else h=(r-g)/d+4;h*=60;}return[h,s,l];}
+const fmtTk=v=>'৳'+Math.round(v).toLocaleString('en-IN');
+let LANG='en';
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),2600);}
+
+/* ---------- domain data ---------- */
+const FABRICS={
+  jersey:{en:'Jersey knit',bn:'জার্সি নিট',fibre:'Likely cotton (T-shirt knit)',fibreBn:'সম্ভবত সুতি'},
+  denim:{en:'Denim',bn:'ডেনিম',fibre:'Likely cotton (denim)',fibreBn:'সম্ভবত সুতি'},
+  twill:{en:'Twill',bn:'টুইল',fibre:'Likely cotton twill',fibreBn:'সম্ভবত সুতি'},
+  canvas:{en:'Canvas',bn:'ক্যানভাস',fibre:'Likely cotton canvas',fibreBn:'সম্ভবত সুতি'},
+  fleece:{en:'Fleece',bn:'ফ্লিস',fibre:'Likely polyester (synthetic)',fibreBn:'সম্ভবত পলিয়েস্টার'},
+  corduroy:{en:'Corduroy',bn:'কর্ডুরয়',fibre:'Likely cotton corduroy',fibreBn:'সম্ভবত সুতি'}
+};
+const FAB_KEYS=Object.keys(FABRICS);
+const COLOURS={White:'সাদা',Cream:'ক্রিম',Black:'কালো',Grey:'ধূসর',Navy:'নেভি',Blue:'নীল',Red:'লাল',Maroon:'মেরুন',Pink:'গোলাপি',Orange:'কমলা',Brown:'বাদামি',Yellow:'হলুদ',Green:'সবুজ',Purple:'বেগুনি','Mixed / print':'মিশ্র / প্রিন্ট'};
+const FAMILY={White:'W',Cream:'W',Black:'K',Grey:'G',Navy:'B',Blue:'B',Red:'R',Maroon:'R',Pink:'R',Orange:'O',Brown:'O',Yellow:'Y',Green:'N',Purple:'P'};
+const BINS={
+  1:{en:'White cotton',bn:'সাদা সুতি',color:'#cfc8b0',ink:'#18241d',price:73},
+  2:{en:'Dark & grey cotton',bn:'গাঢ় সুতি',color:'#2d3a4f',ink:'#fff',price:46},
+  3:{en:'Denim',bn:'ডেনিম',color:'#3c5a8a',ink:'#fff',price:48},
+  4:{en:'Coloured cotton',bn:'রঙিন সুতি',color:'#d0563b',ink:'#fff',price:52},
+  5:{en:'Fleece / synthetic',bn:'ফ্লিস / সিনথেটিক',color:'#7c818b',ink:'#fff',price:26},
+  6:{en:'Mixed / print',bn:'মিশ্র / প্রিন্ট',color:'#9a6fb0',ink:'#fff',price:22}
+};
+const UNSORTED=29; // Tk/kg ≈ $235/t
+
+/* ---------- i18n ---------- */
+const I18N={bn:{
+ tagline:'গার্মেন্টস জুট বাছাইয়ে ক্যামেরা + এআই · Phantom Troupe',heroT:'একই জুট। দাম আড়াই গুণ পর্যন্ত।',heroP:'বাংলাদেশের কারখানায় বছরে প্রায় ৬ লাখ টন জুট হয়। বাছাই করা সাদা জুট ~$৬০০/টন, না বাছাই করা মিশ্র জুট ~$২৩৫/টন।',
+ s1:'জুট প্রতি বছর',s2:'প্রতি টন, অবাছাই → বাছাই',s3:'বাছাইকর্মী নারী',t1:'স্ক্যান স্টেশন',t2:'ব্যাচ খাতা',t3:'ব্যাচ পাসপোর্ট',t4:'দৈনিক রিপোর্ট',
+ k1:'স্ক্যান করা বান্ডিল',k2:'মোট ওজন',k3:'বাছাই করলে দাম',k4:'অবাছাইয়ের তুলনায় বেশি',camTag:'বাছাই টেবিলের ক্যামেরা · কাপড় ফ্রেমের ভেতরে রাখুন',
+ upload:'📷 ছবি তুলুন / আপলোড',demo:'▶ অটো ডেমো',clear:'ব্যাচ মুছুন',trayL:'দর্জির দোকানের নমুনা টুকরা — স্ক্যান করতে চাপুন:',
+ p1:'১ ছবি',p2:'২ রং বিশ্লেষণ',p3:'৩ কাপড় মডেল',p4:'৪ গ্রেড ও বিন',p5:'৫ খাতা',empty:'এআই সিদ্ধান্ত দেখতে একটি টুকরা স্ক্যান করুন।',
+ fab:'কাপড়ের ধরন',col:'রং',live:'লাইভ পিক্সেল বিশ্লেষণ',grd:'গ্রেড',purity:'রঙের বিশুদ্ধতা',gradeRule:'A ≥ ৮৫% · B ≥ ৬২% · C = মিশ্র / প্রিন্ট',val:'দাম',
+ wrong:'কাপড় ভুল? ঠিক করুন:',binsT:'বিন অনুযায়ী ওজন',cmpT:'বাছাইয়ের মূল্য',unsorted:'অবাছাই (মিশ্র) বিক্রি',sorted:'Jhut AI দিয়ে বাছাই করে বিক্রি',
+ cmpNote:'দাম উদাহরণস্বরূপ — প্রতিবেদিত ~$২৩৫/টন (অবাছাই) ও ~$৬০০/টন (বাছাই সাদা সুতি) দামের ভিত্তিতে।',ledT:'ব্যাচ খাতা',thF:'কাপড়',thC:'রং',thG:'গ্রেড',thB:'বিন',thS:'যাচাই',
+ ledEmpty:'এখনও কোনো বান্ডিল নেই — স্ক্যান স্টেশনে টুকরা স্ক্যান করুন।',passT:'ব্যাচ পাসপোর্ট',passS:'ক্রেতা ও রিসাইক্লারের জন্য ডিজিটাল রেকর্ড · EU ডিজিটাল প্রোডাক্ট পাসপোর্ট উপযোগী',
+ verified:'এআই-যাচাইকৃত',compT:'ওজন অনুযায়ী গঠন',copyPass:'পাসপোর্ট কপি (JSON)',qrN:'ব্যাচ রেকর্ড দেখতে স্ক্যান করুন (ডেমো কোড)',
+ repT:'জুট ব্যবসায়ীর জন্য আজকের সারাংশ',repS:'সহজ বাংলায় — ব্যবসায়ী বা সুপারভাইজার সরাসরি ব্যবস্থা নিতে পারবেন।',insT:'এরপর কী করবেন',copySum:'বাংলা সারাংশ কপি',
+ provT:'ডেটা ও এআই উৎস',prov1:'রং ও গ্রেড: এই পেজেই আসল পিক্সেল বিশ্লেষণ চলছে।',prov2:'কাপড়ের ধরন: Kaggle “Mobile-Captured Fabric Dataset” (৩,৩৫৪টি কারখানার ফোন ছবি, ৬ ক্লাস; লাইসেন্স অজানা, গবেষণা/প্রোটোটাইপে ব্যবহৃত) দিয়ে প্রশিক্ষিত EfficientNet। এই প্রোটোটাইপে নমুনা টুকরায় ডেমো প্রেডিকশন এবং আপলোড করা ছবিতে সহজ টেক্সচার হিউরিস্টিক ব্যবহৃত।',prov3:'ক্যামেরা দিয়ে ফাইবার ব্লেন্ড নিশ্চিত করা যায় না — ফেজ ২-এ NIR সেন্সর। ওজন সিমুলেটেড স্কেল থেকে। দাম উদাহরণস্বরূপ।'
+}};
+const EN_TEXT={};
+document.querySelectorAll('[data-i]').forEach(el=>{EN_TEXT[el.dataset.i]=el.innerHTML;});
+function applyLang(l){
+  LANG=l;document.documentElement.lang=l==='bn'?'bn':'en';
+  $('#lang-en').classList.toggle('on',l==='en');$('#lang-bn').classList.toggle('on',l==='bn');
+  document.querySelectorAll('[data-i]').forEach(el=>{const k=el.dataset.i;const v=l==='bn'&&I18N.bn[k]?I18N.bn[k]:EN_TEXT[k];if(v!=null)el.innerHTML=v;el.classList.toggle('bn',l==='bn');});
+  if(current)renderResult(current);renderAll();
+}
+$('#lang-en').onclick=()=>applyLang('en');$('#lang-bn').onclick=()=>applyLang('bn');
+const T=(en,bn)=>LANG==='bn'?bn:en;
+
+/* ---------- procedural scraps (samples) ---------- */
+const SAMPLES=[
+ {type:'jersey',color:'#f4f2ec',seed:11,name:'White T-shirt offcut'},
+ {type:'denim',color:'#2b3d63',seed:22,name:'Indigo denim'},
+ {type:'jersey',color:'#1d2a4a',seed:33,name:'Navy jersey'},
+ {type:'fleece',color:'#8a8f96',seed:44,name:'Grey fleece'},
+ {type:'twill',color:'#b5332e',seed:55,name:'Red twill with white hem',band:'#f1eee6'},
+ {type:'print',colors:['#ece6d6','#c0392b','#1f6f8b'],seed:66,name:'Printed offcut'},
+ {type:'corduroy',color:'#6b4a2b',seed:77,name:'Brown corduroy'},
+ {type:'canvas',color:'#e8dcc0',seed:88,name:'Cream canvas'},
+ {type:'jersey',color:'#121212',seed:99,name:'Black jersey'},
+ {type:'denim',color:'#6d8fbd',seed:111,name:'Light denim'}
+];
+function drawScrap(cv,s){
+  const ctx=cv.getContext('2d'),W=cv.width,H=cv.height,r=rng(s.seed),k=W/240;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.fillStyle='#cfccc3';ctx.fillRect(0,0,W,H);
+  // table grain
+  for(let i=0;i<60;i++){ctx.fillStyle=`rgba(0,0,0,${.02+r()*.03})`;ctx.fillRect(0,r()*H,W,1*k);}
+  ctx.scale(k,k);
+  const pts=[];const n=9;const rot=r()*Math.PI;
+  for(let i=0;i<n;i++){const a=rot+i/n*Math.PI*2;const rad=100+r()*18;pts.push([120+Math.cos(a)*rad,120+Math.sin(a)*rad]);}
+  const path=()=>{ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();};
+  ctx.save();ctx.shadowColor='rgba(0,0,0,.3)';ctx.shadowBlur=10;ctx.shadowOffsetY=3;path();ctx.fillStyle=s.color||s.colors[0];ctx.fill();ctx.restore();
+  ctx.save();path();ctx.clip();
+  const c=s.color,lw=1;
+  if(s.type==='jersey'){
+    ctx.fillStyle=c;ctx.fillRect(0,0,240,240);const a=hexToRgb(c).reduce((x,y)=>x+y)>600?.07:.12;
+    ctx.lineWidth=1.1;
+    for(let y=0;y<240;y+=6)for(let x=0;x<240;x+=5){ctx.strokeStyle=shade(c,-a);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+2.5,y+5);ctx.lineTo(x+5,y);ctx.stroke();ctx.strokeStyle=shade(c,a);ctx.beginPath();ctx.moveTo(x+1,y);ctx.lineTo(x+2.5,y+3);ctx.stroke();}
+  }else if(s.type==='denim'){
+    ctx.fillStyle=c;ctx.fillRect(0,0,240,240);ctx.strokeStyle=shade(c,.18);ctx.lineWidth=1.4;
+    for(let i=-240;i<480;i+=4){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i+240,240);ctx.stroke();}
+    ctx.fillStyle='rgba(255,255,255,.35)';for(let i=0;i<260;i++)ctx.fillRect(r()*240,r()*240,1,1);
+  }else if(s.type==='twill'){
+    ctx.fillStyle=c;ctx.fillRect(0,0,240,240);ctx.lineWidth=1;
+    for(let i=-300;i<480;i+=3){ctx.strokeStyle=shade(c,i%2?-.1:.08);ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i+140,240);ctx.stroke();}
+  }else if(s.type==='canvas'){
+    ctx.fillStyle=c;ctx.fillRect(0,0,240,240);
+    for(let y=0;y<240;y+=4)for(let x=0;x<240;x+=4){ctx.fillStyle=shade(c,((x+y)/4)%2?-.06:.04);ctx.fillRect(x,y,3.4,3.4);}
+  }else if(s.type==='fleece'){
+    ctx.fillStyle=c;ctx.fillRect(0,0,240,240);
+    for(let i=0;i<1800;i++){ctx.fillStyle=shade(c,(r()-.5)*.24);ctx.globalAlpha=.55;ctx.beginPath();ctx.arc(r()*240,r()*240,1+r()*2.4,0,7);ctx.fill();}
+    ctx.globalAlpha=1;
+  }else if(s.type==='corduroy'){
+    for(let x=0;x<240;x+=6){const g=ctx.createLinearGradient(x,0,x+6,0);g.addColorStop(0,shade(c,-.15));g.addColorStop(.5,shade(c,.14));g.addColorStop(1,shade(c,-.15));ctx.fillStyle=g;ctx.fillRect(x,0,6,240);}
+  }else if(s.type==='print'){
+    const [a,b,d]=s.colors;ctx.fillStyle=a;ctx.fillRect(0,0,240,240);
+    for(let y=0;y<240;y+=36){ctx.fillStyle=b;ctx.fillRect(0,y,240,12);ctx.fillStyle=d;ctx.fillRect(0,y+18,240,12);}
+    for(let i=0;i<40;i++){ctx.fillStyle=i%2?b:d;ctx.beginPath();ctx.arc(r()*240,r()*240,3+r()*4,0,7);ctx.fill();}
+  }
+  if(s.band){ctx.fillStyle=s.band;ctx.fillRect(0,150,240,30);ctx.strokeStyle=shade(s.band,-.15);ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(0,156);ctx.lineTo(240,156);ctx.stroke();ctx.setLineDash([]);}
+  ctx.restore();
+  // frayed edge highlight
+  ctx.strokeStyle='rgba(255,255,255,.25)';ctx.lineWidth=1.2;path();ctx.stroke();
+  ctx.setTransform(1,0,0,1,0,0);
+}
+
+/* ---------- AI step 1: colour analysis (real) ---------- */
+function nameColour(r,g,b){
+  const [h,s,l]=rgbToHsl(r,g,b);
+  if(l<.1)return'Black';
+  if(s<.18&&l<.22)return'Black';
+  if(l>.85&&s<.35)return'White';
+  if(l>.78&&s<.15)return'White';
+  if(s<.15)return'Grey';
+  if(h<15||h>=345)return l<.3?'Maroon':(l>.72?'Pink':'Red');
+  if(h<45)return l>.75?'Cream':(l<.5?'Brown':(s>.5?'Orange':'Brown'));
+  if(h<70)return l>.75?'Cream':(l<.35?'Brown':'Yellow');
+  if(h<170)return'Green';
+  if(h<255)return l<.33?'Navy':'Blue';
+  if(h<290)return'Purple';
+  return l>.6?'Pink':(l<.3?'Maroon':'Pink');
+}
+function analyseColour(cv){
+  const W=cv.width,ctx=cv.getContext('2d');
+  const x0=Math.round(W*.2),sz=Math.round(W*.6);
+  const d=ctx.getImageData(x0,x0,sz,sz).data;
+  const tally={},sum={};let n=0;const step=4*3;
+  for(let i=0;i<d.length;i+=step){const r=d[i],g=d[i+1],b=d[i+2];const nm=nameColour(r,g,b);tally[nm]=(tally[nm]||0)+1;sum[nm]=sum[nm]||[0,0,0];sum[nm][0]+=r;sum[nm][1]+=g;sum[nm][2]+=b;n++;}
+  const names=Object.keys(tally).sort((a,b)=>tally[b]-tally[a]);
+  const fam={};names.forEach(nm=>{const f=FAMILY[nm];fam[f]=(fam[f]||0)+tally[nm];});
+  const top=names[0];const purity=fam[FAMILY[top]]/n;
+  const avg=sum[top].map(v=>v/tally[top]);
+  return{top,purity,hex:rgbToHex(...avg),shares:names.filter(nm=>tally[nm]/n>=.02).slice(0,3).map(nm=>({name:nm,share:tally[nm]/n,hex:rgbToHex(...sum[nm].map(v=>v/tally[nm]))})),familyShare:fam};
+}
+
+/* ---------- AI step 2: fabric type ---------- */
+function textureHeuristic(cv,col){
+  const W=cv.width,ctx=cv.getContext('2d'),x0=Math.round(W*.3),sz=Math.round(W*.4);
+  const d=ctx.getImageData(x0,x0,sz,sz).data;const g=new Float32Array(sz*sz);
+  for(let i=0;i<sz*sz;i++)g[i]=(d[i*4]*.3+d[i*4+1]*.59+d[i*4+2]*.11);
+  let gx=0,gy=0,d1=0,d2=0,m=0;
+  for(let y=1;y<sz-1;y++)for(let x=0;x<sz-1;x++){const i=y*sz+x;gx+=Math.abs(g[i+1]-g[i]);gy+=Math.abs(g[i+sz]-g[i]);d1+=Math.abs(g[i+sz+1]-g[i]);d2+=Math.abs(g[i-sz+1]-g[i]);m++;}
+  gx/=m;gy/=m;d1/=m;d2/=m;
+  const E=(gx+gy)/2/255,an=Math.abs(Math.log((gx+1e-3)/(gy+1e-3))),dg=Math.abs(d1-d2)/((d1+d2)/2+1e-3);
+  const blue=(col.familyShare.B||0)/Object.values(col.familyShare).reduce((a,b)=>a+b,0);
+  const sc={fleece:2.2-E*40,corduroy:(an-.35)*4,denim:dg*5+blue*2-1.2,twill:dg*5-blue-.8,canvas:E*25-dg*3-an*3-.5,jersey:.6-Math.abs(E-.05)*20-dg*2};
+  const ex=FAB_KEYS.map(k=>Math.exp(sc[k]*1.3));const tot=ex.reduce((a,b)=>a+b,0);
+  return FAB_KEYS.map((k,i)=>({k,p:ex[i]/tot})).sort((a,b)=>b.p-a.p);
+}
+function presetPrediction(type,seed){
+  const r=rng(seed*7);const top=.89+r()*.08;let rest=1-top;const others=FAB_KEYS.filter(k=>k!==type).sort(()=>r()-.5);
+  const a=rest*(.55+r()*.2),b=rest-a;return[{k:type,p:top},{k:others[0],p:a},{k:others[1],p:b}];
+}
+
+/* ---------- AI step 3: grade, bin, value ---------- */
+function decide(fabric,col){
+  const mixed=col.purity<.62;const colourName=mixed?'Mixed / print':col.top;
+  const grade=col.purity>=.85?'A':(mixed?'C':'B');
+  let bin;
+  if(mixed)bin=6;else if(fabric==='fleece')bin=5;else if(fabric==='denim')bin=3;
+  else if(FAMILY[col.top]==='W')bin=1;
+  else if(['Black','Navy','Maroon','Brown','Grey'].includes(col.top))bin=2;else bin=4;
+  const price=BINS[bin].price*(grade==='B'?.85:1);
+  return{colourName,grade,bin,price};
+}
+
+/* ---------- state ---------- */
+const items=[];let current=null,corrections=0,busy=false;
+const camc=$('#camc');
+function thumb(cv){const t=document.createElement('canvas');t.width=t.height=64;t.getContext('2d').drawImage(cv,0,0,64,64);return t.toDataURL('image/jpeg',.8);}
+function setPipe(i){document.querySelectorAll('#pipe span').forEach((s,j)=>s.classList.toggle('on',j<i));}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function animateScale(kg){const el=$('#scale');let t=0;const iv=setInterval(()=>{t++;const v=t<8?kg*(t/8)+(Math.random()-.5)*.05:kg;el.textContent=Math.max(0,v).toFixed(2)+' kg';if(t>=8)clearInterval(iv);},70);}
+
+async function scan(source){
+  if(busy)return;busy=true;
+  const cam=$('#cam');
+  // draw into camera canvas
+  if(source.sample){drawScrap(camc,source.sample);}else{const ctx=camc.getContext('2d');const img=source.img;const s=Math.min(img.width,img.height);ctx.drawImage(img,(img.width-s)/2,(img.height-s)/2,s,s,0,0,camc.width,camc.height);}
+  const r=rng((source.sample?source.sample.seed:Date.now())*3);
+  const kg=Math.round((.4+r()*1.1)*20)/20;
+  animateScale(kg);
+  cam.classList.add('scanning');setPipe(1);await sleep(450);
+  const col=analyseColour(camc);setPipe(2);await sleep(400);
+  const preds=source.sample?presetPrediction(source.sample.type==='print'?'jersey':source.sample.type,source.sample.seed):textureHeuristic(camc,col);
+  setPipe(3);await sleep(400);
+  const fabric=preds[0].k;const dec=decide(fabric,col);setPipe(4);await sleep(300);
+  cam.classList.remove('scanning');
+  const it={id:items.length+1,thumb:thumb(camc),fabric,preds:preds.slice(0,3),col,kg,...dec,value:kg*dec.price,corrected:false,mode:source.sample?'preset':'heuristic',name:source.sample?source.sample.name:'Uploaded photo'};
+  items.push(it);current=it;setPipe(5);
+  renderResult(it);renderAll();busy=false;
+  return it;
+}
+
+/* ---------- render ---------- */
+function bar(label,p,color){return`<div class="bar"><span class="l">${label}</span><span class="t"><i style="width:${(p*100).toFixed(0)}%;${color?'background:'+color:''}"></i></span><span class="v">${(p*100).toFixed(0)}%</span></div>`;}
+function insText(it){const f=FABRICS[it.fabric];return{bn:`বিন ${bnNum(it.bin)} → ${it.bin===6?'মিশ্র / প্রিন্ট':f.bn} · ${COLOURS[it.colourName]} · গ্রেড ${it.grade}`,en:`Bin ${it.bin} → ${it.bin===6?'Mixed / print':f.en} · ${it.colourName} · Grade ${it.grade}`};}
+function renderResult(it){
+  $('#empty').style.display='none';$('#res').style.display='block';
+  const B=BINS[it.bin],t=insText(it);
+  const bb=$('#binbig');bb.style.background=B.color;bb.style.color=B.ink;
+  $('#r-bin').textContent=LANG==='bn'?bnNum(it.bin):it.bin;$('#r-ins').textContent=t.bn;$('#r-ins-en').textContent=t.en+' · '+T(B.en,B.bn);
+  const f=FABRICS[it.fabric];
+  $('#r-fab').textContent=T(f.en,f.bn)+'  '+(it.preds[0].p*100).toFixed(0)+'%';
+  $('#r-model').textContent=it.corrected?T('corrected by worker','কর্মী সংশোধন করেছেন'):(it.mode==='preset'?T('demo model','ডেমো মডেল'):T('texture heuristic','টেক্সচার হিউরিস্টিক'));
+  $('#r-model').className='chipm'+(it.mode==='heuristic'||it.corrected?' warn':'');
+  $('#r-fabbars').innerHTML=it.preds.map(p=>bar(T(FABRICS[p.k].en,FABRICS[p.k].bn),p.p)).join('');
+  $('#r-fibre').textContent=T(f.fibre,f.fibreBn)+T(' · blend not verified by camera (NIR in phase 2)',' · ক্যামেরায় ব্লেন্ড যাচাই হয় না (ফেজ ২-এ NIR)');
+  $('#r-chip').style.background=it.colourName==='Mixed / print'?`linear-gradient(135deg,${it.col.shares.map(s=>s.hex).join(',')})`:it.col.hex;
+  $('#r-col').textContent=T(it.colourName,COLOURS[it.colourName]);
+  $('#r-hex').textContent=it.col.hex.toUpperCase();
+  $('#r-colbars').innerHTML=it.col.shares.map(s=>bar(T(s.name,COLOURS[s.name]),s.share,s.hex)).join('');
+  const g=$('#r-grade');g.textContent=it.grade;g.className='grade g'+it.grade;
+  $('#r-pur').textContent=(it.col.purity*100).toFixed(0)+'%';
+  $('#r-price').textContent=fmtTk(it.price)+'/kg · '+fmtTk(it.value);
+  $('#r-pricecmp').textContent=T(`${it.kg.toFixed(2)} kg · unsorted it would fetch ${fmtTk(it.kg*UNSORTED)} (৳${UNSORTED}/kg)`,`${bnNum(it.kg.toFixed(2))} কেজি · অবাছাই বিক্রি করলে ${fmtTk(it.kg*UNSORTED)} (৳${UNSORTED}/কেজি)`);
+  const sel=$('#r-fix');sel.innerHTML=FAB_KEYS.map(k=>`<option value="${k}" ${k===it.fabric?'selected':''}>${T(FABRICS[k].en,FABRICS[k].bn)}</option>`).join('');
+  $('#r-fixmsg').textContent=it.corrected?T('✓ Correction logged — becomes new training data','✓ সংশোধন সংরক্ষিত — নতুন ট্রেনিং ডেটা হবে'):'';
+}
+$('#r-fix').onchange=e=>{if(!current)return;const k=e.target.value;if(k===current.fabric)return;current.fabric=k;current.preds=[{k,p:1},...current.preds.filter(p=>p.k!==k).slice(0,2).map(p=>({k:p.k,p:0}))];Object.assign(current,decide(k,current.col));current.value=current.kg*current.price;if(!current.corrected)corrections++;current.corrected=true;renderResult(current);renderAll();toast(T('Correction saved to training set','সংশোধন ট্রেনিং সেটে যোগ হলো'));};
+
+function totals(){const kg=items.reduce((a,b)=>a+b.kg,0),val=items.reduce((a,b)=>a+b.value,0),uns=kg*UNSORTED;const byBin={};for(let b=1;b<=6;b++)byBin[b]=0;items.forEach(i=>byBin[i.bin]+=i.kg);return{kg,val,uns,up:uns?val/uns:0,byBin};}
+function batchId(){let h=2166136261;items.forEach(i=>{h^=Math.round(i.kg*100)+i.bin*31+i.id;h=Math.imul(h,16777619);});return'PT-JA-'+new Date().toISOString().slice(0,10).replace(/-/g,'')+'-'+((h>>>0).toString(16).slice(0,4).toUpperCase()||'0000');}
+
+function renderAll(){
+  const t=totals();const N=n=>LANG==='bn'?bnNum(n):n;
+  $('#k-n').textContent=N(items.length);$('#k-kg').textContent=N(t.kg.toFixed(1))+T(' kg',' কেজি');$('#k-val').textContent=fmtTk(t.val);$('#k-up').textContent=items.length?N(t.up.toFixed(2))+'×':'—';
+  // batch
+  const maxKg=Math.max(.001,...Object.values(t.byBin));
+  $('#binbars').innerHTML=Object.keys(BINS).map(b=>`<div class="bar"><span class="l" style="width:150px"><span class="binTag" style="background:${BINS[b].color};color:${BINS[b].ink}">${N(b)}</span> ${T(BINS[b].en,BINS[b].bn)}</span><span class="t"><i style="width:${t.byBin[b]/maxKg*100}%;background:${BINS[b].color}"></i></span><span class="v" style="width:60px">${N(t.byBin[b].toFixed(1))}</span></div>`).join('');
+  $('#c-u').textContent=fmtTk(t.uns);$('#c-s').textContent=fmtTk(t.val);$('#c-x').textContent=items.length?T(`+${fmtTk(t.val-t.uns)} · ${t.up.toFixed(2)}× more`,`+${fmtTk(t.val-t.uns)} · ${bnNum(t.up.toFixed(2))} গুণ বেশি`):'';
+  $('#ledger').innerHTML=items.slice().reverse().map(i=>`<tr><td><img src="${i.thumb}" alt=""></td><td>${T(FABRICS[i.fabric].en,FABRICS[i.fabric].bn)}</td><td><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${i.col.hex};vertical-align:-1px;margin-right:5px;border:1px solid #0002"></span>${T(i.colourName,COLOURS[i.colourName])}</td><td><span class="grade g${i.grade}" style="width:26px;height:26px;line-height:26px;font-size:14px;border-radius:6px">${i.grade}</span></td><td><span class="binTag" style="background:${BINS[i.bin].color};color:${BINS[i.bin].ink}">${N(i.bin)}</span></td><td>${N(i.kg.toFixed(2))}</td><td>${fmtTk(i.value)}</td><td>${i.corrected?'✎ '+T('worker','কর্মী'):'✓ AI'}</td></tr>`).join('');
+  $('#ledEmpty').style.display=items.length?'none':'block';
+  renderPassport(t);renderReport(t);
+}
+
+function renderPassport(t){
+  const id=batchId();const cotton=items.filter(i=>i.bin!==5&&i.bin!==6).reduce((a,b)=>a+b.kg,0);
+  const gA=items.filter(i=>i.grade==='A').length;const N=n=>LANG==='bn'?bnNum(n):n;
+  const rows=[[T('Batch ID','ব্যাচ আইডি'),id],[T('Date','তারিখ'),new Date().toLocaleDateString(LANG==='bn'?'bn-BD':'en-GB',{day:'numeric',month:'long',year:'numeric'})],[T('Source','উৎস'),T('Demo sorting station, Gazipur','ডেমো বাছাই স্টেশন, গাজীপুর')],[T('Total weight','মোট ওজন'),N(t.kg.toFixed(1))+T(' kg',' কেজি')],[T('Bundles','বান্ডিল'),N(items.length)],[T('Likely cotton share','সম্ভাব্য সুতির অংশ'),t.kg?N((cotton/t.kg*100).toFixed(0))+'%':'—'],[T('Grade A bundles','গ্রেড A বান্ডিল'),N(gA)+' / '+N(items.length)],[T('Human corrections','মানুষের সংশোধন'),N(corrections)],[T('Sorting method','বাছাই পদ্ধতি'),T('Camera AI (colour + fabric type)','ক্যামেরা এআই (রং + কাপড়ের ধরন)')]];
+  $('#passdl').innerHTML=rows.map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join('');
+  $('#passcomp').innerHTML=t.kg?Object.keys(BINS).filter(b=>t.byBin[b]>0).map(b=>bar(T(BINS[b].en,BINS[b].bn),t.byBin[b]/t.kg,BINS[b].color)).join(''):`<p class="note">${T('Scan scraps to build the passport.','পাসপোর্ট তৈরি করতে টুকরা স্ক্যান করুন।')}</p>`;
+  drawQR(id+items.length);
+}
+function drawQR(seed){
+  const cv=$('#qr'),ctx=cv.getContext('2d'),n=29;let h=0;for(const ch of String(seed))h=Math.imul(h^ch.charCodeAt(0),2654435761);
+  const r=rng(h);ctx.fillStyle='#fff';ctx.fillRect(0,0,n,n);ctx.fillStyle='#18241d';
+  for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(r()>.52)ctx.fillRect(x,y,1,1);
+  const finder=(x,y)=>{ctx.fillStyle='#fff';ctx.fillRect(x-1,y-1,9,9);ctx.fillStyle='#18241d';ctx.fillRect(x,y,7,7);ctx.fillStyle='#fff';ctx.fillRect(x+1,y+1,5,5);ctx.fillStyle='#18241d';ctx.fillRect(x+2,y+2,3,3);};
+  finder(1,1);finder(n-8,1);finder(1,n-8);
+}
+function renderReport(t){
+  if(!items.length){$('#sum-bn').textContent='এখনও কোনো ডেটা নেই। স্ক্যান স্টেশনে কয়েকটি টুকরা স্ক্যান করুন।';$('#sum-en').textContent='No data yet.';$('#insights').innerHTML='';return;}
+  const topBin=Object.keys(t.byBin).sort((a,b)=>t.byBin[b]-t.byBin[a])[0];
+  const mixedPct=t.kg?t.byBin[6]/t.kg*100:0;const whitePct=t.kg?t.byBin[1]/t.kg*100:0;const gA=items.filter(i=>i.grade==='A').length;
+  $('#sum-bn').textContent=`আজ ${bnNum(items.length)}টি বান্ডিল বাছাই হয়েছে, মোট ${bnNum(t.kg.toFixed(1))} কেজি। সবচেয়ে বেশি এসেছে “${BINS[topBin].bn}” (${bnNum(t.byBin[topBin].toFixed(1))} কেজি)। বাছাই করে বিক্রি করলে দাম প্রায় ${fmtTk(t.val)}, না বাছাই করলে মাত্র ${fmtTk(t.uns)} — অর্থাৎ ${bnNum(t.up.toFixed(1))} গুণ বেশি আয়। ${bnNum(gA)}টি বান্ডিল গ্রেড A।`;
+  $('#sum-en').textContent=`Today ${items.length} bundles were sorted, ${t.kg.toFixed(1)} kg in total. Most common: “${BINS[topBin].en}” (${t.byBin[topBin].toFixed(1)} kg). Sold sorted ≈ ${fmtTk(t.val)} vs ${fmtTk(t.uns)} unsorted — ${t.up.toFixed(1)}× more income. ${gA} bundles are Grade A.`;
+  const ins=[];
+  if(whitePct>0)ins.push(['💰',T(`White cotton is ${whitePct.toFixed(0)}% of weight but your highest-value bin — sell it separately to a spinning mill or recycler.`,`সাদা সুতি ওজনের ${bnNum(whitePct.toFixed(0))}% কিন্তু সবচেয়ে দামি — স্পিনিং মিল বা রিসাইক্লারের কাছে আলাদা বিক্রি করুন।`)]);
+  if(mixedPct>0)ins.push(['🧵',T(`${mixedPct.toFixed(0)}% is mixed / print. Ask the cutting floor to keep printed offcuts in a separate sack to raise batch value.`,`${bnNum(mixedPct.toFixed(0))}% মিশ্র / প্রিন্ট। কাটিং ফ্লোরে প্রিন্ট টুকরা আলাদা বস্তায় রাখতে বলুন — ব্যাচের দাম বাড়বে।`)]);
+  if(t.byBin[5]>0)ins.push(['♻️',T('Fleece / synthetic is kept away from cotton so cotton bales stay pure for recycling.','ফ্লিস / সিনথেটিক আলাদা রাখা হয়েছে, তাই সুতির বেল রিসাইক্লিংয়ের জন্য বিশুদ্ধ থাকবে।')]);
+  ins.push(['📄',T('Share the Batch Passport with your buyer — traceable, sorted jhut is what EU-linked recyclers ask for.','ক্রেতার সাথে ব্যাচ পাসপোর্ট শেয়ার করুন — ইউরোপের রিসাইক্লাররা ট্রেসযোগ্য, বাছাই করা জুট চায়।')]);
+  $('#insights').innerHTML=ins.map(i=>`<div class="insight"><i>${i[0]}</i><span>${i[1]}</span></div>`).join('');
+}
+
+/* ---------- copy ---------- */
+async function copy(text,msg){try{await navigator.clipboard.writeText(text);toast(msg);}catch(e){toast(T('Copy not allowed here — select the text manually','এখানে কপি করা যাচ্ছে না'));}}
+$('#copySum').onclick=()=>copy($('#sum-bn').textContent,T('Summary copied','সারাংশ কপি হয়েছে'));
+$('#copyPass').onclick=()=>{const t=totals();copy(JSON.stringify({batch_id:batchId(),date:new Date().toISOString().slice(0,10),total_kg:+t.kg.toFixed(2),bundles:items.length,human_corrections:corrections,composition_kg:Object.fromEntries(Object.keys(BINS).map(b=>[BINS[b].en,+t.byBin[b].toFixed(2)])),items:items.map(i=>({id:i.id,fabric:i.fabric,colour:i.colourName,grade:i.grade,bin:i.bin,kg:i.kg,checked_by:i.corrected?'worker':'ai'}))},null,2),T('Passport JSON copied','পাসপোর্ট কপি হয়েছে'));};
+
+/* ---------- inputs ---------- */
+const tray=$('#tray');
+SAMPLES.forEach((s,i)=>{const c=document.createElement('canvas');c.width=c.height=120;drawScrap(c,s);c.title=s.name;c.onclick=()=>scan({sample:s});tray.appendChild(c);});
+$('#file').onchange=e=>{const f=e.target.files[0];if(!f)return;const url=URL.createObjectURL(f);const img=new Image();img.onload=()=>{scan({img});URL.revokeObjectURL(url);};img.src=url;e.target.value='';};
+let demoRunning=false;
+$('#demo').onclick=async()=>{
+  if(demoRunning)return;demoRunning=true;$('#demo').disabled=true;go('scan');
+  for(const s of SAMPLES){await scan({sample:s});await sleep(1100);}
+  demoRunning=false;$('#demo').disabled=false;toast(T('Batch complete → see the Batch ledger & Passport','ব্যাচ সম্পন্ন → খাতা ও পাসপোর্ট দেখুন'));
+};
+$('#clear').onclick=()=>{items.length=0;corrections=0;current=null;$('#res').style.display='none';$('#empty').style.display='block';setPipe(0);$('#scale').textContent='0.00 kg';const ctx=camc.getContext('2d');ctx.fillStyle='#cfccc3';ctx.fillRect(0,0,480,480);renderAll();};
+
+/* ---------- routing ---------- */
+const VIEWS=['scan','batch','passport','report'];
+function go(v){if(!VIEWS.includes(v))v='scan';VIEWS.forEach(x=>$('#v-'+x).classList.toggle('on',x===v));document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.dataset.v===v));if(location.hash!=='#'+v){try{history.replaceState(null,'','#'+v);}catch(e){}}}
+window.addEventListener('hashchange',()=>go(location.hash.slice(1)));
+document.querySelectorAll('#tabs a').forEach(a=>a.onclick=e=>{e.preventDefault();go(a.dataset.v);});
+(function init(){const ctx=camc.getContext('2d');ctx.fillStyle='#cfccc3';ctx.fillRect(0,0,480,480);ctx.fillStyle='#8c897f';ctx.font='600 20px Inter, sans-serif';ctx.textAlign='center';ctx.fillText('Place a scrap here',240,246);go(location.hash.slice(1));renderAll();})();
+})();
+</script>
+</body>
+</html>
