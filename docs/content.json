@@ -1,0 +1,316 @@
+{
+ "version": 2,
+ "updated": "2026-11-20",
+ "sections": [
+  {
+   "id": "problem",
+   "group": "pitch",
+   "title": "Problem",
+   "html": "\n<p class=\"lead\">Bangladesh throws away value it already owns.</p>\n<p>Bangladesh is the world's second-largest garment exporter. Its factories produce a huge stream of cutting waste called <b>jhut</b>. The Circular Fashion Partnership (with BGMEA) measured <b>577,000 tonnes</b> of post-industrial textile waste in 2019, about <b>250,000 tonnes of it 100% cotton</b>. Today the figure is about <b>600,000 tonnes a year</b>.</p>\n<div class=\"kpis\"><div><b>~600k t</b><span>jhut per year</span></div><div><b>$235/t</b><span>mixed, unsorted</span></div><div><b>$600/t</b><span>sorted white cotton</span></div><div><b>~70%</b><span>of sorters are women</span></div></div>\n<p>Jhut's value depends almost entirely on <b>sorting by fabric type and colour</b>. Today, workers in informal yards sort it by hand and by eye. The work is slow, inconsistent and unrecorded. So most jhut is sold mixed at about $235 a tonne, while Bangladesh imports cotton fibre for its spinning mills.</p>"
+  },
+  {
+   "id": "solution",
+   "group": "pitch",
+   "title": "Solution",
+   "html": "\n<p class=\"lead\">A phone camera that sorts jhut and records every bundle.</p>\n<p>A worker places a scrap or bundle under a phone camera at the sorting table. Within about a second, Jhut AI:</p>\n<ol><li>reads the <b>colour</b> and colour purity with pixel analysis;</li><li>predicts the <b>fabric type</b> (jersey, denim, twill, canvas, fleece, corduroy) with a vision model;</li><li>assigns a <b>grade (A/B/C)</b> and <b>one of 6 bins</b>, with a one-line Bangla instruction (for example, “বিন ১ → জার্সি · সাদা · গ্রেড A”);</li><li>logs the bundle in a <b>batch ledger</b>, issues a <b>Batch Passport</b> with a QR code, and writes a <b>daily Bangla summary</b> for the trader.</li></ol>\n<p>When the AI is wrong, the worker fixes it with one tap. Every correction becomes new training data.</p>"
+  },
+  {
+   "id": "why-now",
+   "group": "pitch",
+   "title": "Why Now",
+   "html": "\n<ul><li>The EU <b>Ecodesign for Sustainable Products Regulation (ESPR)</b> and textile <b>Extended Producer Responsibility</b> push brands towards recycled, traceable content.</li>\n<li>The EU <b>ban on destroying unsold textiles</b> applies from July 2026.</li>\n<li>The coming <b>Digital Product Passport</b> means buyers will expect sorted, documented recycled material.</li>\n<li>Phone cameras and small on-device models are now good enough to run in an informal yard, without industrial machines.</li></ul>\n<p>Hand sorting produces neither consistent grades nor records. Without both, Bangladesh risks losing value and buyers.</p>"
+  },
+  {
+   "id": "demo",
+   "group": "pitch",
+   "title": "Product Demo",
+   "html": "\n<p>The interactive prototype is live: <a href=\"../\" class=\"btnlink\">Open the Jhut AI prototype →</a></p>\n<p>Try it with <b>▶ Play auto demo</b>. The demo scans 10 sample scraps, then fills the batch ledger, the Batch Passport and the Bangla report. The numbers in <a href=\"#status\">System status</a> above update from your own demo session.</p>\n<p class=\"muted\">What is real in the demo: colour and grade come from pixel analysis running in the page. What is simulated: fabric predictions for the sample scraps are preset, uploaded photos use a simple texture rule (the trained model is in progress), the scale is simulated, and prices are illustrative.</p>"
+  },
+  {
+   "id": "market",
+   "group": "pitch",
+   "title": "Market Opportunity",
+   "html": "\n<ul><li><b>Volume:</b> about 600,000 t of jhut a year in Bangladesh; about 250,000 t of it is pure cotton.</li>\n<li><b>Price gap:</b> about $235/t mixed versus about $600/t for sorted white cotton, up to 2.5× for the same material.</li>\n<li><b>National value:</b> SWITCH2CE estimates local recycling could save Bangladesh about <b>$700 million a year</b>.</li>\n<li><b>Expansion:</b> India, Pakistan and Vietnam have the same garment-waste problem.</li></ul>\n<p class=\"muted\">Figures are rounded and prices are indicative. Sources are listed at the end of this page.</p>"
+  },
+  {
+   "id": "business",
+   "group": "pitch",
+   "title": "Business Model",
+   "html": "\n<ul><li><b>Station subscription:</b> a monthly fee per sorting station (phone app + light box + dashboard), paid by jhut traders and factories.</li>\n<li><b>Batch Passport fee:</b> a small fee per verified passport issued to buyers and recyclers.</li>\n<li><b>Later:</b> anonymised, aggregated waste data for brands' sustainability reporting, and a commission on a marketplace that connects sorted-jhut sellers with recyclers.</li></ul>\n<p><b>Why customers pay (illustrative, to validate in pilots):</b> a yard sorting 300 kg a day that moves part of its stock from the mixed price (about Tk 29/kg) to sorted grades (about Tk 45–73/kg) earns several thousand taka more per day. The subscription is a small fraction of that.</p>"
+  },
+  {
+   "id": "traction",
+   "group": "pitch",
+   "title": "Traction",
+   "html": "\n<p><b>Stage: pre-pilot.</b> We report only what exists today.</p>\n<ul><li>Interactive prototype live, covering the full workflow (scan, ledger, passport, Bangla report).</li>\n<li>Open training data identified: the Kaggle “Mobile-Captured Fabric Dataset” (3,354 phone photos taken in a textile factory, 6 classes; licence listed as unknown, so used for research and prototyping only).</li>\n<li>Next: interviews and letters of interest from jhut traders, a model trained on real tailor-shop scraps, and a 4-week pilot at one sorting yard.</li></ul>"
+  },
+  {
+   "id": "competition",
+   "group": "pitch",
+   "title": "Competition",
+   "html": "\n<table><thead><tr><th>Option</th><th>Sorts?</th><th>Traceable?</th><th>Fits informal yards?</th></tr></thead><tbody>\n<tr><td>Hand sorting (today)</td><td>Yes, by eye</td><td>No</td><td>Yes</td></tr>\n<tr><td>Digital waste tracing (e.g. Reverse Resources)</td><td>No</td><td>Yes</td><td>Partly</td></tr>\n<tr><td>Industrial near-infrared sorting machines</td><td>Yes</td><td>Partly</td><td>No (cost)</td></tr>\n<tr><td>Upcycling brands (e.g. DenimRevive)</td><td>Use sorted waste</td><td>—</td><td>No</td></tr>\n<tr class=\"hl\"><td><b>Jhut AI</b></td><td><b>Yes, camera</b></td><td><b>Yes, Batch Passport</b></td><td><b>Yes, phone-first</b></td></tr></tbody></table>"
+  },
+  {
+   "id": "advantage",
+   "group": "pitch",
+   "title": "Unique Advantage",
+   "html": "\n<ul><li><b>Sorting and traceability in one tool.</b></li>\n<li><b>Phone-first and low-cost:</b> a phone and a light box, not an industrial machine.</li>\n<li><b>Bangla-first</b> design for workers and traders.</li>\n<li><b>A correction loop:</b> every one-tap fix becomes labelled data, so the model improves with daily use.</li>\n<li><b>Export-ready records:</b> the Batch Passport links informal yards to EU traceability demands.</li></ul>"
+  },
+  {
+   "id": "gtm",
+   "group": "pitch",
+   "title": "Go-To-Market",
+   "html": "\n<ol><li><b>Interviews:</b> interview jhut traders and collect letters of interest.</li>\n<li><b>Free pilot:</b> a 4-week pilot at one sorting yard, measuring price uplift and kg sorted per worker per day.</li>\n<li><b>Paid stations:</b> convert pilot yards, then expand through trader networks.</li>\n<li><b>Demand side:</b> offer Batch Passports to recyclers and spinning mills that need verified input.</li></ol>"
+  },
+  {
+   "id": "team",
+   "group": "pitch",
+   "title": "Team",
+   "html": "<!-- rendered from team data -->",
+   "kind": "team"
+  },
+  {
+   "id": "vision",
+   "group": "pitch",
+   "title": "Vision",
+   "html": "\n<p class=\"lead\">Every kilogram of garment waste sorted, recorded and recycled where it is made.</p>\n<p>We are starting with one yard and one phone. The goal is a traceable circular supply chain for South and South-East Asia's garment hubs, where sorted waste becomes recycled fibre for local mills.</p>"
+  },
+  {
+   "id": "overview",
+   "group": "tech",
+   "title": "Product Overview",
+   "html": "\n<p><b>What it does:</b> it turns a smartphone into a sorting station that classifies textile scraps by colour and fabric, assigns a grade and bin, and records each bundle for traceability.</p>\n<p><b>Target users:</b> jhut traders and sorting yards (paying customers), garment factories, recyclers and spinning mills, and sorters, most of whom are women.</p>\n<p><b>Core use cases:</b> sort a scrap into the right bin; record a batch with weight and value; issue a Batch Passport to a buyer; send the trader a plain-Bangla daily summary.</p>"
+  },
+  {
+   "id": "features",
+   "group": "tech",
+   "title": "Feature Matrix",
+   "html": "<!-- rendered from feature data -->",
+   "kind": "features"
+  },
+  {
+   "id": "architecture",
+   "group": "tech",
+   "title": "Architecture",
+   "html": "\n<p>Target architecture for the final build. The parts marked <i>now</i> run in the current static prototype.</p>\n<pre class=\"mermaid\">\nflowchart LR\n  A[Phone app UI<br/>camera + Bangla UI] --> B[On-device AI<br/>colour analysis now<br/>TFLite fabric model]\n  B --> C[API server]\n  C --> D[(Postgres + pgvector<br/>ledger, passports,<br/>embeddings)]\n  C --> E[LLM service<br/>local Ollama model,<br/>cloud fallback]\n  C --> F[n8n automations<br/>daily report, alerts]\n  C --> G[MCP server<br/>for buyer agents]\n  H[Prefect retraining<br/>from corrections] --> B\n  D --> H\n</pre>"
+  },
+  {
+   "id": "dataflow",
+   "group": "tech",
+   "title": "Data Flow",
+   "html": "\n<pre class=\"mermaid\">\nflowchart LR\n  I[Input:<br/>scrap photo + weight] --> P[Processing:<br/>crop, colour histogram,<br/>purity]\n  P --> M[AI:<br/>fabric model,<br/>grade + bin rules]\n  M --> O[Output:<br/>Bangla bin instruction,<br/>ledger row, passport]\n  O --> F[Feedback:<br/>worker one-tap correction]\n  F -->|new labelled data| M\n</pre>\n<p>Prices and weights are always calculated by code. The LLM only turns those numbers into Bangla text, so it cannot invent figures.</p>"
+  },
+  {
+   "id": "stack",
+   "group": "tech",
+   "title": "Technology Stack",
+   "html": "\n<table><thead><tr><th>Layer</th><th>Now (prototype)</th><th>Final build (plan)</th></tr></thead><tbody>\n<tr><td>Frontend</td><td>Single-page HTML/CSS/JS, Bangla + English</td><td>Android app (camera), web dashboard</td></tr>\n<tr><td>Vision AI</td><td>Pixel colour analysis; demo fabric predictions</td><td>EfficientNet fine-tuned, exported to TensorFlow Lite (on-device, offline)</td></tr>\n<tr><td>LLM</td><td>Template-based Bangla summary</td><td>Small open model via Ollama / llama.cpp; cloud model fallback; structured JSON output</td></tr>\n<tr><td>Backend</td><td>None (static)</td><td>API server, Postgres + pgvector</td></tr>\n<tr><td>Automation</td><td>—</td><td>n8n (reports, alerts), Prefect (retraining), LangGraph (assistant)</td></tr>\n<tr><td>Hosting</td><td>GitHub Pages</td><td>Cloud VM + yard-office mini-PC for offline use</td></tr></tbody></table>"
+  },
+  {
+   "id": "api",
+   "group": "tech",
+   "title": "API Documentation",
+   "html": "\n<p><b>APIs used now:</b> none. The prototype runs fully in the browser. The changelog on this page reads the public GitHub API.</p>\n<p><b>APIs exposed (final build, planned):</b></p>\n<table><thead><tr><th>Endpoint</th><th>Purpose</th><th>Auth</th></tr></thead><tbody>\n<tr><td><code>POST /scans</code></td><td>Record a scan: fabric, colour, grade, bin, kg</td><td>Station token</td></tr>\n<tr><td><code>PATCH /scans/{id}</code></td><td>Worker correction</td><td>Station token</td></tr>\n<tr><td><code>GET /batches/{id}/passport</code></td><td>Batch Passport (JSON + QR)</td><td>Public link / buyer key</td></tr>\n<tr><td><code>GET /yards/{id}/summary?date=</code></td><td>Daily summary data</td><td>Trader login</td></tr>\n<tr><td>MCP server <code>jhut-ai-mcp</code></td><td>5 tools (passport, stock, price quote, summary, regulation search), 2 resources, 1 prompt</td><td>API key; Streamable HTTP</td></tr></tbody></table>"
+  },
+  {
+   "id": "data",
+   "group": "tech",
+   "title": "Data Layer",
+   "html": "\n<ul><li><b>Sources:</b> the Kaggle “Mobile-Captured Fabric Dataset” (3,354 photos, 6 classes; licence unknown, research use only), our own labelled photos of tailor-shop scraps, and worker corrections.</li>\n<li><b>Storage (plan):</b> Postgres for ledger and passports; pgvector for image embeddings (a “similar scraps” memory) and document chunks.</li>\n<li><b>Privacy:</b> the camera captures fabric only, with no faces or personal data. The LLM receives only aggregated numbers.</li></ul>"
+  },
+  {
+   "id": "ai",
+   "group": "tech",
+   "title": "AI Layer",
+   "html": "\n<ul><li><b>Colour + purity:</b> per-pixel colour naming and colour-family share. Grade A ≥ 85% purity, B ≥ 62%, C = mixed/print. Live now.</li>\n<li><b>Fabric type:</b> EfficientNet transfer learning, then TFLite on the phone. In progress; the prototype shows demo predictions.</li>\n<li><b>Low confidence:</b> scraps are flagged “check manually” instead of being auto-binned.</li>\n<li><b>Correction loop:</b> worker fixes become training data; retraining is weekly (Prefect) and the new model is used only if it is more accurate.</li>\n<li><b>Retrieval (plan):</b> nearest similar scraps from pgvector support uncertain predictions; “Ask Jhut AI” answers trader questions from buyer specs and EU rules (hybrid search + reranker + Bangla query rewriting).</li>\n<li><b>Explainability:</b> the scan shows the colour shares, the purity score and the top fabric probabilities behind each decision.</li></ul>"
+  },
+  {
+   "id": "roadmap",
+   "group": "tech",
+   "title": "Product Roadmap",
+   "html": "\n<table><thead><tr><th>Horizon</th><th>Goals</th></tr></thead><tbody>\n<tr><td><b>Short term</b> (preliminary → final)</td><td>Trained fabric model on real scraps; local LLM Bangla report; trader interviews</td></tr>\n<tr><td><b>Mid term</b> (pilot)</td><td>Android app + light box at one yard; Postgres ledger; n8n daily WhatsApp report; Batch Passport links</td></tr>\n<tr><td><b>Long term</b></td><td>Low-cost near-infrared sensor for fibre blends; MCP server and marketplace for recyclers; expansion to India, Pakistan, Vietnam</td></tr></tbody></table>"
+  },
+  {
+   "id": "performance",
+   "group": "tech",
+   "title": "Performance & Scalability",
+   "html": "\n<ul><li><b>Target per scan:</b> about 1 second on a mid-range phone, offline.</li>\n<li><b>Load (illustrative):</b> a yard sorting 300 kg a day logs hundreds of bundles a day, which is light for one server.</li>\n<li><b>Optimisation:</b> vision runs on the device (no per-scan cloud cost); daily reports are generated in one overnight batch; a template is used on quiet days, so no LLM call is made.</li></ul>"
+  },
+  {
+   "id": "security",
+   "group": "tech",
+   "title": "Security",
+   "html": "\n<ul><li><b>Now:</b> static site, no personal data collected. This docs page uses client-side visibility and scheduling. That is suitable for a showcase, but it is not real access control.</li>\n<li><b>Final build:</b> login for traders and admins; role-based access (worker, supervisor, trader, admin); station tokens; signed Batch Passport links; encrypted storage.</li>\n<li><b>Responsible AI:</b> workers can override any decision, and every override is recorded in the passport.</li></ul>"
+  },
+  {
+   "id": "analytics",
+   "group": "tech",
+   "title": "Analytics & KPIs",
+   "html": "\n<ul><li>Price uplift per kg sorted (target: up to 2.5× for white cotton grades)</li>\n<li>Kilograms sorted per worker per day</li>\n<li>Share of cotton sold to local recyclers instead of exported or downcycled</li>\n<li>AI correction rate (falling over time means accuracy is improving)</li>\n<li>Number of batches issued with a passport</li></ul>"
+  },
+  {
+   "id": "contributors",
+   "group": "tech",
+   "title": "Team & Contributors",
+   "html": "<p>See the <a href=\"#team\">Team</a> section. Code contributions are listed in the <a href=\"#changelog\">Changelog</a>, which is pulled live from GitHub.</p>"
+  },
+  {
+   "id": "changelog",
+   "group": "tech",
+   "title": "Changelog",
+   "html": "<!-- rendered live from GitHub commits -->",
+   "kind": "changelog"
+  },
+  {
+   "id": "sources",
+   "group": "tech",
+   "title": "Sources",
+   "html": "\n<p class=\"muted\">Circular Fashion Partnership / BGMEA (textile waste mapping, 2019); Centre for Policy Dialogue and The Financial Express (jhut prices); UNICEF (women in waste sorting); SWITCH2CE (value of local recycling); European Commission (ESPR, Digital Product Passport, ban on destroying unsold textiles); Kaggle “Mobile-Captured Fabric Dataset”. Figures are rounded and prices are indicative.</p>"
+  }
+ ],
+ "features": [
+  {
+   "name": "Colour analysis + purity",
+   "area": "Vision",
+   "status": "live",
+   "note": "Pixel analysis in the browser"
+  },
+  {
+   "name": "Grade A/B/C + 6 bins",
+   "area": "Rules",
+   "status": "live",
+   "note": "Purity thresholds 85% / 62%"
+  },
+  {
+   "name": "Bangla bin instruction",
+   "area": "UX",
+   "status": "live",
+   "note": "Bangla + English UI"
+  },
+  {
+   "name": "Batch ledger",
+   "area": "Records",
+   "status": "live",
+   "note": "In-browser, per session"
+  },
+  {
+   "name": "Batch Passport (JSON + QR)",
+   "area": "Records",
+   "status": "demo",
+   "note": "QR is a demo code"
+  },
+  {
+   "name": "Daily Bangla summary",
+   "area": "LLM",
+   "status": "demo",
+   "note": "Template now; local LLM planned"
+  },
+  {
+   "name": "One-tap worker correction",
+   "area": "Feedback",
+   "status": "live",
+   "note": "Logged; retraining planned"
+  },
+  {
+   "name": "Fabric type classifier",
+   "area": "Vision",
+   "status": "demo",
+   "note": "Preset predictions; EfficientNet in progress"
+  },
+  {
+   "name": "Weighing",
+   "area": "Hardware",
+   "status": "demo",
+   "note": "Simulated scale"
+  },
+  {
+   "name": "Android app + TFLite offline model",
+   "area": "Vision",
+   "status": "planned",
+   "note": "Final build"
+  },
+  {
+   "name": "Postgres + pgvector ledger",
+   "area": "Backend",
+   "status": "planned",
+   "note": "Final build"
+  },
+  {
+   "name": "Local LLM (Ollama / llama.cpp)",
+   "area": "LLM",
+   "status": "planned",
+   "note": "Offline Bangla reports"
+  },
+  {
+   "name": "Similar-scrap memory (vector search)",
+   "area": "RAG",
+   "status": "planned",
+   "note": "Supports uncertain scans"
+  },
+  {
+   "name": "Ask Jhut AI (Bangla RAG assistant)",
+   "area": "RAG",
+   "status": "planned",
+   "note": "LangGraph flow"
+  },
+  {
+   "name": "n8n daily report + alerts",
+   "area": "Automation",
+   "status": "planned",
+   "note": "WhatsApp / SMS"
+  },
+  {
+   "name": "Weekly retraining pipeline",
+   "area": "MLOps",
+   "status": "planned",
+   "note": "Prefect"
+  },
+  {
+   "name": "MCP server for buyer agents",
+   "area": "Integration",
+   "status": "planned",
+   "note": "5 tools, 2 resources, 1 prompt"
+  },
+  {
+   "name": "Near-infrared fibre-blend sensor",
+   "area": "Hardware",
+   "status": "planned",
+   "note": "Phase 2"
+  }
+ ],
+ "team": {
+  "name": "Phantom Troupe",
+  "members": [
+   {
+    "name": "Team member 1",
+    "role": "Add role",
+    "email": "",
+    "photo": ""
+   },
+   {
+    "name": "Team member 2",
+    "role": "Add role",
+    "email": "",
+    "photo": ""
+   },
+   {
+    "name": "Team member 3",
+    "role": "Add role",
+    "email": "",
+    "photo": ""
+   }
+  ]
+ },
+ "changelog": [
+  {
+   "version": "0.2",
+   "date": "2026-11-20",
+   "note": "Added the /docs module: pitch deck, technical docs, live system status."
+  },
+  {
+   "version": "0.1",
+   "date": "2026-11-20",
+   "note": "Published the interactive prototype (scan station, ledger, passport, Bangla report)."
+  }
+ ]
+}

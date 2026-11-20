@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jhut AI Docs</title>
+<meta name="description" content="Jhut AI: pitch deck, technical documentation and live system status for camera + AI sorting of garment waste in Bangladesh.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f5f0;--panel:#ffffff;--ink:#17231c;--muted:#5b6a61;--line:#e1ded4;--soft:#efede6;
+  --brand:#0f5c3f;--brand2:#13895c;--accent:#f2a516;
+  --live:#13895c;--demo:#c78a0e;--plan:#5470a8;--danger:#b0473a;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0f1512;--panel:#16201b;--ink:#e8efe9;--muted:#9aaba1;--line:#2a3730;--soft:#1d2923;
+  --brand:#2fb57f;--brand2:#3fcf92;--accent:#f2b23a;--live:#3fcf92;--demo:#e0a73a;--plan:#86a2db;--danger:#e07a6c;
+}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 Inter,'Hind Siliguri',system-ui,sans-serif}
+a{color:var(--brand)}
+h1,h2,h3{font-family:'Space Grotesk',Inter,sans-serif;line-height:1.2;margin:0}
+code{background:var(--soft);padding:1px 6px;border-radius:5px;font-size:13px}
+/* top bar */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .in{max-width:1240px;margin:0 auto;padding:10px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.mark{width:34px;height:34px;border-radius:9px;background:conic-gradient(from 200deg,#e8e4d6,#2d3a4f,#3c5a8a,#d0563b,#8b8f98,#9a6fb0,#e8e4d6);position:relative;flex:none}
+.mark::after{content:"";position:absolute;inset:8px;border-radius:5px;background:var(--brand)}
+.brand b{font-family:'Space Grotesk';font-size:18px}
+.brand small{display:block;color:var(--muted);font-size:12px;line-height:1.2}
+.search{flex:1;min-width:180px;max-width:420px;position:relative}
+.search input{width:100%;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font:inherit}
+.search span{position:absolute;right:10px;top:9px;font-size:12px;color:var(--muted)}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.b{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:9px;padding:8px 12px;font:600 13px Inter,sans-serif;cursor:pointer;text-decoration:none;white-space:nowrap}
+.b:hover{border-color:var(--brand)}
+.b.pri{background:var(--brand);border-color:var(--brand);color:#fff}
+/* layout */
+.wrap{max-width:1240px;margin:0 auto;padding:18px 16px 60px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:28px}
+nav.side{position:sticky;top:72px;align-self:start;max-height:calc(100vh - 90px);overflow:auto;font-size:14px;padding-bottom:20px}
+nav.side h4{margin:16px 0 6px;font:700 11px Inter;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)}
+nav.side a{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:7px;color:var(--ink);text-decoration:none}
+nav.side a:hover{background:var(--soft)}
+nav.side a.on{background:var(--brand);color:#fff}
+nav.side a.hide{display:none}
+nav.side a .grip{display:none;cursor:grab;color:var(--muted)}
+body.editing nav.side a .grip{display:inline}
+nav.side a.dragover{outline:2px dashed var(--accent)}
+main{min-width:0}
+/* hero */
+.hero{background:linear-gradient(120deg,#0f5c3f,#13895c);color:#fff;border-radius:16px;padding:26px 24px;margin-bottom:18px}
+.hero h1{font-size:30px;letter-spacing:-.4px}
+.hero p{margin:8px 0 0;opacity:.9;max-width:760px}
+.hero .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.hero .b{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35);color:#fff}
+.hero .b.pri{background:#f2a516;border-color:#f2a516;color:#17231c}
+/* sections */
+section.doc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:14px}
+section.doc.dim{display:none}
+section.doc h2{font-size:21px;margin-bottom:10px;display:flex;align-items:baseline;gap:8px}
+section.doc h2 .anchor{font-size:15px;color:var(--muted);text-decoration:none;opacity:0;transition:opacity .2s}
+section.doc:hover h2 .anchor{opacity:1}
+section.doc .tag{font:600 11px Inter;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.body p{margin:8px 0}
+.body ul,.body ol{margin:8px 0;padding-left:22px}
+.body li{margin:3px 0}
+.lead{font-size:18px;font-weight:600}
+.muted{color:var(--muted);font-size:14px}
+.btnlink{font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0;display:block;overflow-x:auto}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
+tr.hl td{background:color-mix(in srgb,var(--brand2) 12%,transparent)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+.kpis div{background:var(--soft);border-radius:10px;padding:10px 12px}
+.kpis b{display:block;font:700 22px 'Space Grotesk'}
+.kpis span{font-size:12px;color:var(--muted)}
+.mermaid,.mermaid-src{background:var(--soft);border-radius:10px;padding:12px;overflow-x:auto;text-align:center;margin:10px 0;font-size:13px}
+.mermaid-src{text-align:left;white-space:pre;font-family:ui-monospace,Consolas,monospace}
+/* status dashboard */
+.status{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.card{background:var(--soft);border-radius:12px;padding:12px 14px;min-width:0}
+.card h3{font:600 12px Inter;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:6px}
+.card .big{font:700 22px 'Space Grotesk'}
+.card .sm{font-size:12.5px;color:var(--muted)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:1px}
+/* status chips */
+.st{display:inline-block;font:700 11px Inter;padding:2px 8px;border-radius:999px;color:#fff;letter-spacing:.3px}
+.st-live{background:var(--live)}.st-demo{background:var(--demo)}.st-planned,.st-plan{background:var(--plan)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 10px}
+.chip{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:4px 11px;font:600 12.5px Inter;cursor:pointer}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+/* team */
+.team{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-top:8px}
+.member{background:var(--soft);border-radius:14px;padding:16px;text-align:center}
+.av{width:96px;height:96px;border-radius:50%;margin:0 auto 10px;overflow:hidden;border:3px solid var(--panel);box-shadow:0 0 0 2px var(--brand);display:flex;align-items:center;justify-content:center;font:700 30px 'Space Grotesk';color:#fff;background:var(--brand)}
+.av img{width:100%;height:100%;object-fit:cover;display:block}
+.member b{display:block;font-size:15px}
+.member .role{color:var(--muted);font-size:13px}
+.member a{font-size:13px;word-break:break-all}
+/* changelog */
+.log{list-style:none;padding:0!important}
+.log li{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.log li .v{font:700 13px 'Space Grotesk';min-width:56px;color:var(--brand)}
+.log li .d{color:var(--muted);font-size:13px;min-width:92px}
+/* gate */
+.gate{max-width:560px;margin:12vh auto;text-align:center;padding:30px;background:var(--panel);border:1px solid var(--line);border-radius:16px}
+.gate .code{font:700 54px 'Space Grotesk';color:var(--muted)}
+/* admin */
+.adminbar{background:var(--accent);color:#17231c;font:600 13px Inter;padding:6px 16px;text-align:center}
+.admin{position:fixed;right:14px;bottom:14px;width:340px;max-height:80vh;overflow:auto;z-index:40;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.25);padding:14px;font-size:13.5px}
+.admin.min .ab{display:none}
+.admin h3{font-size:15px;display:flex;justify-content:space-between;align-items:center}
+.admin label{display:block;margin:8px 0 3px;font-weight:600;font-size:12.5px;color:var(--muted)}
+.admin input[type=datetime-local],.admin input[type=number],.admin input[type=text],.admin textarea{width:100%;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+.admin .row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.admin .note{font-size:12px;color:var(--muted);margin-top:8px}
+.admin hr{border:none;border-top:1px solid var(--line);margin:12px 0}
+.mrow{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px;padding-bottom:6px;border-bottom:1px dashed var(--line)}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font:700 12px Inter;color:#fff}
+body.editing .body[contenteditable=true],body.editing h2 .t[contenteditable=true]{outline:2px dashed var(--accent);outline-offset:4px;border-radius:4px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 15px;border-radius:9px;font-size:14px;opacity:0;transition:opacity .3s;z-index:60;pointer-events:none}
+.toast.on{opacity:1}
+footer{color:var(--muted);font-size:13px;margin-top:20px}
+@media (max-width:900px){
+  .wrap{grid-template-columns:1fr}
+  nav.side{position:static;max-height:none;display:flex;gap:4px;overflow-x:auto;white-space:nowrap;padding-bottom:6px}
+  nav.side h4{display:none}
+  .status,.kpis{grid-template-columns:repeat(2,1fr)}
+  .admin{left:10px;right:10px;width:auto}
+}
+@media print{
+  .top,nav.side,.admin,.adminbar,.hero .row,.toast,.chips{display:none!important}
+  .wrap{display:block;padding:0}
+  body{background:#fff;color:#000}
+  section.doc{break-inside:avoid;border:none;padding:8px 0}
+  section.doc.dim{display:block}
+  .hero{background:none;color:#000;padding:0}
+}
+</style>
+</head>
+<body>
+<div id="adminbar" class="adminbar" hidden></div>
+<div class="top"><div class="in">
+  <a class="brand" href="#"><div class="mark"></div><div><b>Jhut AI</b><small>Docs · Pitch · System status</small></div></a>
+  <div class="search"><input id="q" type="search" placeholder="Search the docs…" aria-label="Search the docs"><span id="qcount"></span></div>
+  <div class="actions">
+    <a class="b pri" href="../">Open prototype</a>
+    <button class="b" id="pdf">PDF</button>
+    <button class="b" id="md">Markdown</button>
+    <button class="b" id="share">Copy link</button>
+  </div>
+</div></div>
+
+<div id="app"></div>
+<div id="admin" class="admin" hidden></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const ADMIN=new URLSearchParams(location.search).has('admin');
+const DRAFT_C='jhutdocs.draft.content', DRAFT_K='jhutdocs.draft.config';
+let CONFIG=null, CONTENT=null, EDITING=false, featFilter='all';
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('on'),2400);}
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v);}catch(e){return null;}}
+const fmtDT=iso=>{if(!iso)return'—';const d=new Date(iso);return isNaN(d)?'—':d.toLocaleString('en-GB',{timeZone:'Asia/Dhaka',day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})+' (BD time)';};
+function ago(iso){const s=(Date.now()-Date.parse(iso))/1000;if(!isFinite(s))return'';if(s<60)return'just now';if(s<3600)return Math.round(s/60)+' min ago';if(s<86400)return Math.round(s/3600)+' h ago';return Math.round(s/86400)+' days ago';}
+
+/* ---------- access control ---------- */
+function windowState(c){
+  if(!c.visible)return{open:false,label:'Hidden (turned off by admin)'};
+  const now=Date.now(),s=c.start?Date.parse(c.start):-Infinity,e=c.end?Date.parse(c.end):Infinity;
+  if(now<s)return{open:false,label:'Scheduled, opens '+fmtDT(c.start)};
+  if(now>e)return{open:false,label:'Closed, window ended '+fmtDT(c.end)};
+  return{open:true,label:'Public until '+fmtDT(c.end)};
+}
+function showGate(st){
+  $('#app').innerHTML=`<div class="gate"><div class="code">403</div><h2>Documentation not available</h2>
+  <p class="muted">${esc(st.label)}.</p>
+  <p class="muted">Public window: ${esc(fmtDT(CONFIG.start))} → ${esc(fmtDT(CONFIG.end))}</p>
+  <p><a href="../">Open the Jhut AI prototype →</a></p></div>`;
+}
+
+/* ---------- load ---------- */
+async function load(){
+  try{
+    const [c,k]=await Promise.all([fetch('content.json',{cache:'no-store'}),fetch('config.json',{cache:'no-store'})]);
+    CONTENT=await c.json();CONFIG=await k.json();
+  }catch(e){$('#app').innerHTML='<div class="gate"><h2>Could not load the docs</h2><p class="muted">Please refresh the page.</p></div>';return;}
+  if(ADMIN){
+    const dc=ls(DRAFT_C),dk=ls(DRAFT_K);
+    try{if(dc)CONTENT=JSON.parse(dc);if(dk)CONFIG=JSON.parse(dk);}catch(e){}
+    const bar=$('#adminbar');bar.hidden=false;bar.textContent='Admin preview'+(dc||dk?' · showing your unsaved draft':'')+' · public visitors see the published version';
+  }
+  const st=windowState(CONFIG);
+  if(!st.open&&!ADMIN){showGate(st);return;}
+  render();
+  if(ADMIN)renderAdmin();
+  // re-check the window every minute (closes the page when the window ends)
+  setInterval(()=>{if(!ADMIN&&!windowState(CONFIG).open)showGate(windowState(CONFIG));},60000);
+}
+
+/* ---------- render ---------- */
+const GROUPS={pitch:'Pitch deck',tech:'Technical docs'};
+function render(){
+  const secs=CONTENT.sections;
+  const nav=['<a href="#status" data-id="status">System status</a>'];
+  for(const g of Object.keys(GROUPS)){
+    nav.push(`<h4>${GROUPS[g]}</h4>`);
+    secs.filter(s=>s.group===g).forEach(s=>nav.push(`<a href="#${esc(s.id)}" data-id="${esc(s.id)}" draggable="false"><span class="grip">⠿</span>${esc(s.title)}</a>`));
+  }
+  let html=`<div class="wrap"><nav class="side" id="nav">${nav.join('')}</nav><main>
+  <div class="hero"><h1>Jhut AI</h1><p>Camera + AI that sorts garment waste by fabric and colour, so the same waste sells for up to 2.5× more and is recycled locally in Bangladesh.</p>
+  <div class="row"><a class="b pri" href="../">Try the live prototype</a><a class="b" href="#problem">Pitch deck</a><a class="b" href="#overview">Technical docs</a></div></div>
+  <section class="doc" id="status"><div class="tag">Live</div><h2>System status <a class="anchor" href="#status">#</a></h2><div class="status" id="statusCards"></div>
+  <p class="muted" style="margin-top:10px">Feature counts come from the feature registry, the demo session from your own use of the prototype in this browser, and the code update from the GitHub API.</p></section>`;
+  for(const g of Object.keys(GROUPS)){
+    secs.filter(s=>s.group===g).forEach(s=>{
+      let body=s.html;
+      if(EDITING)body=body.replace(/class="mermaid"/g,'class="mermaid-src"');
+      html+=`<section class="doc" id="${esc(s.id)}" data-kind="${esc(s.kind||'')}"><div class="tag">${GROUPS[g]}</div>
+      <h2><span class="t">${esc(s.title)}</span> <a class="anchor" href="#${esc(s.id)}">#</a></h2><div class="body">${body}</div></section>`;
+    });
+  }
+  html+=`<footer>Jhut AI · Phantom Troupe · Content v${esc(CONTENT.version)} updated ${esc(CONTENT.updated)} · <a href="https://github.com/${esc(CONFIG.repo)}">Source on GitHub</a></footer></main></div>`;
+  $('#app').innerHTML=html;
+  renderTeam();renderFeatures();renderChangelog();renderStatus();
+  spy();lazyMermaid();applySearch();
+  if(EDITING)enableEditing();
+}
+
+function renderStatus(){
+  const st=windowState(CONFIG);
+  const f=CONTENT.features,cnt=k=>f.filter(x=>x.status===k).length;
+  let live=null;try{live=JSON.parse(ls('jhutai.live')||'null');}catch(e){}
+  const sess=live&&live.bundles?`<div class="big">${live.bundles} bundles · ${live.kg} kg</div>
+     <div class="sm">${live.uplift}× value vs unsorted · ${live.corrections} worker corrections · ${esc(ago(live.updated))}</div>`
+     :`<div class="big">No session yet</div><div class="sm"><a href="../">Open the prototype</a> and press “Play auto demo”; this card updates live.</div>`;
+  $('#statusCards').innerHTML=`
+  <div class="card"><h3>Docs visibility</h3><div class="big"><span class="dot" style="background:${st.open?'var(--live)':'var(--danger)'}"></span>${st.open?'Public':'Not public'}</div><div class="sm">${esc(st.label)}</div></div>
+  <div class="card"><h3>Features</h3><div class="big">${cnt('live')} live · ${cnt('demo')} demo</div><div class="sm">${cnt('planned')} planned for the final build · <a href="#features">matrix</a></div></div>
+  <div class="card"><h3>Your demo session</h3>${sess}</div>
+  <div class="card"><h3>Last code update</h3><div class="big" id="pushed">…</div><div class="sm" id="pushedSm">from GitHub</div></div>`;
+  fetch(`https://api.github.com/repos/${CONFIG.repo}`).then(r=>r.ok?r.json():Promise.reject()).then(j=>{$('#pushed').textContent=ago(j.pushed_at);$('#pushedSm').textContent=fmtDT(j.pushed_at);}).catch(()=>{$('#pushed').textContent='—';$('#pushedSm').textContent='GitHub API unavailable';});
+}
+window.addEventListener('storage',e=>{if(e.key==='jhutai.live'&&$('#statusCards'))renderStatus();});
+
+function renderTeam(){
+  const box=$('#team .body');if(!box)return;const t=CONTENT.team||{members:[]};
+  const initials=n=>String(n||'?').trim().split(/\s+/).map(w=>w[0]).slice(0,2).join('').toUpperCase();
+  box.innerHTML=(t.name?`<p class="lead">${esc(t.name)}</p>`:'')+`<div class="team">${t.members.map(m=>`
+    <div class="member"><div class="av">${m.photo?`<img src="${esc(m.photo)}" alt="${esc(m.name)}" loading="lazy" onerror="this.parentNode.textContent='${esc(initials(m.name))}'">`:esc(initials(m.name))}</div>
+    <b>${esc(m.name)}</b><div class="role">${esc(m.role)}</div>${m.email?`<a href="mailto:${esc(m.email)}">${esc(m.email)}</a>`:''}</div>`).join('')}</div>`;
+}
+
+function renderFeatures(){
+  const box=$('#features .body');if(!box)return;const f=CONTENT.features;
+  const lab={live:'Live',demo:'Demo',planned:'Planned'};
+  const rows=f.filter(x=>featFilter==='all'||x.status===featFilter);
+  box.innerHTML=`<p><span class="st st-live">Live</span> works now in the prototype · <span class="st st-demo">Demo</span> simulated in the prototype · <span class="st st-planned">Planned</span> final build</p>
+  <div class="chips">${['all','live','demo','planned'].map(k=>`<button class="chip ${featFilter===k?'on':''}" data-f="${k}">${k==='all'?'All ('+f.length+')':lab[k]+' ('+f.filter(x=>x.status===k).length+')'}</button>`).join('')}</div>
+  <table><thead><tr><th>Feature</th><th>Area</th><th>Status</th><th>Note</th></tr></thead><tbody>
+  ${rows.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.area)}</td><td><span class="st st-${esc(x.status)}">${lab[x.status]||esc(x.status)}</span></td><td class="muted">${esc(x.note)}</td></tr>`).join('')}</tbody></table>`;
+  box.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{featFilter=c.dataset.f;renderFeatures();});
+}
+
+function renderChangelog(){
+  const box=$('#changelog .body');if(!box)return;
+  box.innerHTML=`<h3 style="font-size:15px;margin:4px 0">Releases</h3><ul class="log">${(CONTENT.changelog||[]).map(c=>`<li><span class="v">v${esc(c.version)}</span><span class="d">${esc(c.date)}</span><span>${esc(c.note)}</span></li>`).join('')}</ul>
+  <h3 style="font-size:15px;margin:14px 0 4px">Latest commits <span class="muted">(live from GitHub)</span></h3><ul class="log" id="commits"><li class="muted">Loading…</li></ul>`;
+  fetch(`https://api.github.com/repos/${CONFIG.repo}/commits?per_page=8`).then(r=>r.ok?r.json():Promise.reject()).then(list=>{
+    $('#commits').innerHTML=list.map(c=>`<li><span class="d">${esc((c.commit.author.date||'').slice(0,10))}</span><span><a href="${esc(c.html_url)}">${esc(c.commit.message.split('\n')[0])}</a> <span class="muted">· ${esc(c.author?c.author.login:c.commit.author.name)}</span></span></li>`).join('');
+  }).catch(()=>{$('#commits').innerHTML='<li class="muted">Live commit feed unavailable right now (GitHub rate limit). <a href="https://github.com/'+esc(CONFIG.repo)+'/commits">View on GitHub</a></li>';});
+}
+
+/* ---------- navigation ---------- */
+function spy(){
+  const links=$$('#nav a');const map=new Map(links.map(a=>[a.dataset.id,a]));
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.remove('on'));const a=map.get(e.target.id);if(a)a.classList.add('on');}});},{rootMargin:'-30% 0px -60% 0px'});
+  $$('section.doc').forEach(s=>io.observe(s));
+}
+/* lazy-load the diagram library only when a diagram comes near the screen */
+let mermaidLoading=null;
+function lazyMermaid(){
+  const nodes=$$('pre.mermaid');if(!nodes.length)return;
+  const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();runMermaid();}},{rootMargin:'400px'});
+  nodes.forEach(n=>io.observe(n));
+}
+function runMermaid(){
+  const go=()=>{try{window.mermaid.initialize({startOnLoad:false,securityLevel:'strict',theme:matchMedia('(prefers-color-scheme: dark)').matches?'dark':'neutral'});window.mermaid.run({querySelector:'pre.mermaid'});}catch(e){}};
+  if(window.mermaid)return go();
+  if(!mermaidLoading){mermaidLoading=new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js';s.onload=res;s.onerror=rej;document.head.appendChild(s);});}
+  mermaidLoading.then(go).catch(()=>{});
+}
+
+/* ---------- search ---------- */
+function applySearch(){
+  const q=$('#q').value.trim().toLowerCase();let n=0;
+  $$('section.doc').forEach(s=>{const hit=!q||s.textContent.toLowerCase().includes(q);s.classList.toggle('dim',!hit);if(hit&&q)n++;const a=$(`#nav a[data-id="${CSS.escape(s.id)}"]`);if(a)a.classList.toggle('hide',!hit);});
+  $('#qcount').textContent=q?n+' match'+(n===1?'':'es'):'';
+}
+$('#q').addEventListener('input',applySearch);
+$('#q').addEventListener('keydown',e=>{if(e.key==='Enter'){const s=$('section.doc:not(.dim)');if(s)s.scrollIntoView();}});
+document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement.tagName!=='INPUT'&&!document.activeElement.isContentEditable){e.preventDefault();$('#q').focus();}});
+
+/* ---------- export ---------- */
+function htmlToMd(html){
+  const doc=new DOMParser().parseFromString('<div>'+html+'</div>','text/html');const out=[];
+  const txt=n=>n.textContent.replace(/\s+/g,' ').trim();
+  doc.body.firstChild.childNodes.forEach(n=>{
+    if(n.nodeType!==1){const t=n.textContent.trim();if(t)out.push(t);return;}
+    const tag=n.tagName.toLowerCase();
+    if(tag==='p')out.push(txt(n));
+    else if(tag==='ul')n.querySelectorAll(':scope>li').forEach(li=>out.push('- '+txt(li)));
+    else if(tag==='ol')n.querySelectorAll(':scope>li').forEach((li,i)=>out.push((i+1)+'. '+txt(li)));
+    else if(tag==='pre')out.push('```mermaid\n'+n.textContent.trim()+'\n```');
+    else if(tag==='table'){const rows=[...n.querySelectorAll('tr')].map(r=>'| '+[...r.children].map(txt).join(' | ')+' |');if(rows.length){const cols=rows[0].split('|').length-2;rows.splice(1,0,'|'+' --- |'.repeat(cols));}out.push(rows.join('\n'));}
+    else if(tag==='div'&&n.classList.contains('kpis'))out.push([...n.children].map(d=>'- **'+txt(d.querySelector('b'))+'** '+txt(d.querySelector('span'))).join('\n'));
+    else out.push(txt(n));
+  });
+  return out.filter(Boolean).join('\n\n');
+}
+function toMarkdown(){
+  const L=['# Jhut AI','',`_Content v${CONTENT.version}, updated ${CONTENT.updated}. Live version: ${location.origin+location.pathname}_`,''];
+  for(const g of Object.keys(GROUPS)){
+    L.push('# '+GROUPS[g],'');
+    CONTENT.sections.filter(s=>s.group===g).forEach(s=>{
+      L.push('## '+s.title,'');
+      if(s.kind==='team'){const t=CONTENT.team;if(t.name)L.push('**'+t.name+'**','');t.members.forEach(m=>L.push(`- **${m.name}**, ${m.role}${m.email?' ('+m.email+')':''}`));}
+      else if(s.kind==='features'){L.push('| Feature | Area | Status | Note |','| --- | --- | --- | --- |');CONTENT.features.forEach(f=>L.push(`| ${f.name} | ${f.area} | ${f.status} | ${f.note} |`));}
+      else if(s.kind==='changelog'){(CONTENT.changelog||[]).forEach(c=>L.push(`- v${c.version} (${c.date}): ${c.note}`));}
+      else L.push(htmlToMd(s.html));
+      L.push('');
+    });
+  }
+  return L.join('\n');
+}
+function download(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);}
+$('#pdf').onclick=()=>{$('#q').value='';applySearch();runMermaid();setTimeout(()=>window.print(),600);};
+$('#md').onclick=()=>{if(CONTENT)download('jhut-ai-docs.md',toMarkdown(),'text/markdown');};
+$('#share').onclick=async()=>{const u=location.origin+location.pathname+(location.hash||'');try{await navigator.clipboard.writeText(u);toast('Link copied');}catch(e){toast(u);}};
+
+/* ---------- admin ---------- */
+const toLocal=iso=>{if(!iso)return'';const d=new Date(Date.parse(iso)+6*3600e3);return d.toISOString().slice(0,16);};
+const fromLocal=v=>v?v+':00+06:00':'';
+function collectEdits(){
+  if(!EDITING)return;
+  $$('section.doc').forEach(sec=>{
+    const s=CONTENT.sections.find(x=>x.id===sec.id);if(!s)return;
+    const t=sec.querySelector('h2 .t');if(t)s.title=t.textContent.trim()||s.title;
+    if(!s.kind){s.html=sec.querySelector('.body').innerHTML.replace(/class="mermaid-src"/g,'class="mermaid"');}
+  });
+}
+function enableEditing(){
+  $$('section.doc').forEach(sec=>{
+    if(sec.id==='status')return;
+    const t=sec.querySelector('h2 .t');if(t)t.contentEditable='true';
+    if(!sec.dataset.kind)sec.querySelector('.body').contentEditable='true';
+  });
+  // drag-and-drop reorder inside each nav group
+  let dragId=null;
+  $$('#nav a[data-id]').forEach(a=>{
+    if(a.dataset.id==='status')return;a.draggable=true;
+    a.addEventListener('dragstart',()=>{dragId=a.dataset.id;});
+    a.addEventListener('dragover',e=>{e.preventDefault();a.classList.add('dragover');});
+    a.addEventListener('dragleave',()=>a.classList.remove('dragover'));
+    a.addEventListener('drop',e=>{e.preventDefault();a.classList.remove('dragover');collectEdits();
+      const S=CONTENT.sections,from=S.findIndex(x=>x.id===dragId),to=S.findIndex(x=>x.id===a.dataset.id);
+      if(from<0||to<0||from===to||S[from].group!==S[to].group)return;
+      const [m]=S.splice(from,1);S.splice(to,0,m);render();toast('Section moved (save the draft to keep it)');});
+  });
+}
+function renderAdmin(){
+  const p=$('#admin');p.hidden=false;const st=windowState(CONFIG);
+  p.innerHTML=`<h3>Admin panel <button class="b" id="amin">–</button></h3><div class="ab">
+  <div style="margin-top:6px">Status: <span class="pill" style="background:${st.open?'var(--live)':'var(--danger)'}">${st.open?'Public now':'Not public'}</span><div class="note">${esc(st.label)}</div></div>
+  <label><input type="checkbox" id="aVis" ${CONFIG.visible?'checked':''}> Visible (master switch)</label>
+  <label>Start (Bangladesh time)</label><input type="datetime-local" id="aStart" value="${toLocal(CONFIG.start)}">
+  <label>End (Bangladesh time)</label><input type="datetime-local" id="aEnd" value="${toLocal(CONFIG.end)}">
+  <label>Or publish for a duration (days, starting now)</label>
+  <div class="row"><input type="number" id="aDays" min="1" value="7" style="width:90px"><button class="b" id="aDur">Apply</button></div>
+  <div class="row"><button class="b" id="aNow">Open now</button><button class="b" id="aOff">Turn off now</button></div>
+  <hr>
+  <label><input type="checkbox" id="aEdit" ${EDITING?'checked':''}> Edit mode (click text to edit; drag ⠿ in the menu to reorder)</label>
+  <label>Team</label><div id="aTeam"></div><button class="b" id="aAdd">+ Add member</button>
+  <hr>
+  <label>Changelog note for this version</label><input type="text" id="aNote" placeholder="What changed?">
+  <div class="row"><button class="b pri" id="aSave">Save draft</button><button class="b" id="aDiscard">Discard draft</button></div>
+  <div class="row"><button class="b" id="aDlC">Download content.json</button><button class="b" id="aDlK">Download config.json</button></div>
+  <div class="note"><b>Publishing:</b> commit the downloaded files to <code>docs/</code> in the GitHub repo; every commit is a saved version. The draft stays in this browser only.<br><b>Note:</b> this is a static site, so these controls hide the page for normal visitors but are not secure access control. The final build moves them behind a login.</div></div>`;
+  $('#amin').onclick=()=>p.classList.toggle('min');
+  const upd=()=>{collectEdits();render();renderAdmin();};
+  $('#aVis').onchange=e=>{CONFIG.visible=e.target.checked;upd();};
+  $('#aStart').onchange=e=>{CONFIG.start=fromLocal(e.target.value);upd();};
+  $('#aEnd').onchange=e=>{CONFIG.end=fromLocal(e.target.value);upd();};
+  $('#aDur').onclick=()=>{const d=Math.max(1,+$('#aDays').value||1);const now=Date.now();CONFIG.start=new Date(now).toISOString();CONFIG.end=new Date(now+d*864e5).toISOString();CONFIG.visible=true;upd();toast('Window set for '+d+' days from now');};
+  $('#aNow').onclick=()=>{CONFIG.visible=true;CONFIG.start=new Date().toISOString();upd();};
+  $('#aOff').onclick=()=>{CONFIG.visible=false;upd();};
+  $('#aEdit').onchange=e=>{collectEdits();EDITING=e.target.checked;document.body.classList.toggle('editing',EDITING);render();};
+  const team=CONTENT.team;
+  const drawTeam=()=>{$('#aTeam').innerHTML=team.members.map((m,i)=>`<div class="mrow" data-i="${i}">
+    <input type="text" data-k="name" value="${esc(m.name)}" placeholder="Full name"><input type="text" data-k="role" value="${esc(m.role)}" placeholder="Role">
+    <input type="text" data-k="email" value="${esc(m.email)}" placeholder="Email"><input type="text" data-k="photo" value="${esc(m.photo)}" placeholder="Photo URL or path">
+    <button class="b" data-del="${i}" style="grid-column:1/-1">Remove</button></div>`).join('');
+    $$('#aTeam input').forEach(inp=>inp.onchange=()=>{const i=+inp.closest('.mrow').dataset.i;team.members[i][inp.dataset.k]=inp.value.trim();renderTeam();});
+    $$('#aTeam [data-del]').forEach(b=>b.onclick=()=>{team.members.splice(+b.dataset.del,1);drawTeam();renderTeam();});};
+  drawTeam();
+  $('#aAdd').onclick=()=>{team.members.push({name:'New member',role:'',email:'',photo:''});drawTeam();renderTeam();};
+  const stamp=()=>{const note=$('#aNote').value.trim();if(note){const v=(parseFloat((CONTENT.changelog[0]||{}).version)||0)+0.1;CONTENT.changelog.unshift({version:v.toFixed(1),date:new Date().toISOString().slice(0,10),note});$('#aNote').value='';}CONTENT.updated=new Date().toISOString().slice(0,10);};
+  $('#aSave').onclick=()=>{collectEdits();ls(DRAFT_C,JSON.stringify(CONTENT));ls(DRAFT_K,JSON.stringify(CONFIG));toast('Draft saved in this browser');$('#adminbar').textContent='Admin preview · showing your saved draft · public visitors see the published version';};
+  $('#aDiscard').onclick=()=>{ls(DRAFT_C,null);ls(DRAFT_K,null);location.reload();};
+  $('#aDlC').onclick=()=>{collectEdits();stamp();CONTENT.version=(+CONTENT.version||0)+1;download('content.json',JSON.stringify(CONTENT,null,1),'application/json');renderChangelog();};
+  $('#aDlK').onclick=()=>download('config.json',JSON.stringify(CONFIG,null,1),'application/json');
+}
+
+load();
+})();
+</script>
+</body>
+</html>

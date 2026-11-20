@@ -11,3 +11,7 @@ The prototype shows the full workflow: scan station, batch ledger, batch passpor
 - Weights come from a simulated scale, and prices are illustrative.
 
 By Phantom Troupe.
+
+**Docs, pitch deck and architecture:** https://aayathossain.github.io/jhut-ai/docs/
+
+Admins can open `docs/?admin` to change the visibility window, edit sections, reorder them and update the team list. To publish, commit the downloaded `docs/content.json` and `docs/config.json` files. These controls run in the browser only, so they hide the page from ordinary visitors but are not secure access control.

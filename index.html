@@ -283,7 +283,7 @@ footer b{color:var(--ink)}
     <span data-i="prov2">Fabric type: EfficientNet fine-tuned on the Kaggle “Mobile-Captured Fabric Dataset” (3,354 factory phone photos, 6 classes; licence listed as unknown, used for research/prototype). In this prototype, sample scraps use preset demo predictions and uploaded photos use a lightweight texture heuristic.</span>
     <span data-i="prov3">Fibre blends can't be confirmed by camera — NIR sensor planned for phase 2. Weights come from a simulated scale. Prices are illustrative.</span>
   </div>
-  <p>Jhut AI · Phantom Troupe · Prototype for demo purposes</p>
+  <p>Jhut AI · Phantom Troupe · Prototype for demo purposes · <a href="docs/" style="color:var(--brand)">Docs, pitch &amp; architecture →</a></p>
 </footer>
 </div>
 <div class="toast" id="toast"></div>
@@ -538,6 +538,8 @@ function renderAll(){
   $('#ledger').innerHTML=items.slice().reverse().map(i=>`<tr><td><img src="${i.thumb}" alt=""></td><td>${T(FABRICS[i.fabric].en,FABRICS[i.fabric].bn)}</td><td><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${i.col.hex};vertical-align:-1px;margin-right:5px;border:1px solid #0002"></span>${T(i.colourName,COLOURS[i.colourName])}</td><td><span class="grade g${i.grade}" style="width:26px;height:26px;line-height:26px;font-size:14px;border-radius:6px">${i.grade}</span></td><td><span class="binTag" style="background:${BINS[i.bin].color};color:${BINS[i.bin].ink}">${N(i.bin)}</span></td><td>${N(i.kg.toFixed(2))}</td><td>${fmtTk(i.value)}</td><td>${i.corrected?'✎ '+T('worker','কর্মী'):'✓ AI'}</td></tr>`).join('');
   $('#ledEmpty').style.display=items.length?'none':'block';
   renderPassport(t);renderReport(t);
+  // share this session's live numbers with /docs (same origin, this browser only)
+  try{localStorage.setItem('jhutai.live',JSON.stringify({updated:new Date().toISOString(),bundles:items.length,kg:+t.kg.toFixed(2),valueSorted:Math.round(t.val),valueUnsorted:Math.round(t.uns),uplift:+t.up.toFixed(2),corrections,byBin:Object.fromEntries(Object.keys(BINS).map(b=>[BINS[b].en,+t.byBin[b].toFixed(2)])),gradeA:items.filter(i=>i.grade==='A').length}));}catch(e){}
 }
 
 function renderPassport(t){
