@@ -233,6 +233,9 @@ function render(){
   renderTeam();renderFeatures();renderChangelog();renderStatus();
   spy();lazyMermaid();applySearch();
   if(EDITING)enableEditing();
+  // content loads after the page, so jump to a shared #section link ourselves
+  if(!render.done&&location.hash.length>1){const el=document.getElementById(decodeURIComponent(location.hash.slice(1)));if(el)requestAnimationFrame(()=>el.scrollIntoView());}
+  render.done=true;
 }
 
 function renderStatus(){
